@@ -224,7 +224,7 @@ The technological guardrails define preferred standards, protocols, frameworks, 
 
 - **Preferred protocols:** Use of open, standardized protocols such as HTTPS/REST, WebSocket, or gRPC for communication and integration.
 - **Frameworks:** Use of proven, long-term supported frameworks (e.g., **WebExpress** framework as the platform base) with an active community and clear update strategy.
-- **Data and configuration formats:** Use of interoperable formats such as JSON or YAML for data exchange and XML as the primary configuration format. Configuration files are deliberately stored at file level so they can be versioned in Git and changes documented. For automated distribution and updates of these configurations, configuration management tools like Puppet or similar solutions may be used. In containerized environments (e.g., Docker, Kubernetes, OpenShift), XML configurations can be mounted as volumes or provided via ConfigMaps/Secrets to ensure consistent, versioned, and automatically deployable configuration even in highly scalable scenarios. UTF-8 is the mandatory standard encoding for all text-based formats to preserve compatibility and interoperability.
+- **Data and configuration formats:** Use of interoperable formats such as JSON or YAML for data exchange and JSON as the primary configuration format (the settings directory of the host, read through the .NET configuration model). Configuration files are deliberately stored at file level so they can be versioned in Git and changes documented. For automated distribution and updates of these configurations, configuration management tools like Puppet or similar solutions may be used. In containerized environments (e.g., Docker, Kubernetes, OpenShift), the JSON settings can be mounted as volumes, provided via ConfigMaps/Secrets or overridden through `WEBEXPRESS_`-prefixed environment variables to ensure consistent, versioned, and automatically deployable configuration even in highly scalable scenarios. UTF-8 is the mandatory standard encoding for all text-based formats to preserve compatibility and interoperability.
 - **Interoperability:** Design of interfaces and data models compatible with common enterprise systems and open-source solutions.
 
 ### Quality Attributes
@@ -257,7 +257,7 @@ This defines the operational environments in which **KleeneStar** can run and ou
 - **Container orchestration:** Support for operation in containerized environments (e.g., Kubernetes, OpenShift, Azure Kubernetes Service) for easy scaling and automated deployment.
 - **Supported operating systems:** Primarily Linux-based server environments (e.g., Ubuntu, Red Hat Enterprise Linux) and Windows Server for specific integration scenarios.
 
-Example: An internationally operating enterprise runs **KleeneStar** in a Kubernetes cluster (OpenShift) in its private cloud. The individual core and module containers are deployed via Helm charts; configurations (XML) are mounted as ConfigMaps. Scaling occurs automatically based on load metrics, and updates are applied via rolling update without downtime.
+Example: An internationally operating enterprise runs **KleeneStar** in a Kubernetes cluster (OpenShift) in its private cloud. The individual core and module containers are deployed via Helm charts; configurations (JSON settings) are mounted as ConfigMaps. Scaling occurs automatically based on load metrics, and updates are applied via rolling update without downtime.
 
 ## Integration and Communication Patterns
 

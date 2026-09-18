@@ -1,0 +1,22 @@
+{
+  // The settings of the KleeneStar core plugin. They sit under the plugin id so that they
+  // can never collide with the server's settings or those of another plugin, although every
+  // json file of this directory is merged into one configuration. A value placed under the
+  // same path in webexpress.settings.json, or in an environment variable such as
+  // WEBEXPRESS_Plugins__kleenestar.core__Database__ConnectionString, overrides what is here.
+  "Plugins": {
+    "kleenestar.core": {
+
+      // The database the core keeps its data in. "Assembly" names the provider-specific
+      // model assembly (KleeneStar.Model.Sqlite or KleeneStar.Model.SqlServer), whose
+      // static Create(connectionString) builds the context; "Provider" is the ADO.NET
+      // provider the diagnostics page opens a connection with. A value left out keeps the
+      // sqlite default shown here; a relative data source is taken from the working directory.
+      "Database": {
+        "Provider": "Microsoft.Data.Sqlite",
+        "Assembly": "KleeneStar.Model.Sqlite",
+        "ConnectionString": "Data Source=data/db/kleenestar.db"
+      }
+    }
+  }
+}

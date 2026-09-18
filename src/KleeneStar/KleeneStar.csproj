@@ -60,10 +60,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="config\kleenestar.db.config.xml">
+		<None Update="settings\kleenestar.core.settings.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="config\webexpress.config.xml">
+		<None Update="settings\webexpress.settings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="data\db\readme.md">
