@@ -27,6 +27,33 @@
 
     "Culture": "en-US",
 
+    // The sign-in issues signed tokens instead of keeping a session on the server, and it
+    // refuses to run without this section: no key is invented per process, because one invented
+    // here would sign tokens the next start no longer accepts.
+    //
+    // "SigningKey" is at least 256 random bits, Base64. The one below belongs to this checkout
+    // and to nothing else - a deployment generates its own and keeps it out of the repository
+    // ("WEBEXPRESS_WebExpress__Authentication__SigningKey" is the environment variable for it).
+    //
+    // "RequireHttps" is false because the endpoint above is plain http: the browser refuses a
+    // "__Host-"-prefixed cookie over it, so the credential would never arrive and every request
+    // would be anonymous. An https deployment removes it and keeps the protected cookie names.
+    "Authentication": {
+      "Issuer": "kleenestar",
+      "Audience": "kleenestar",
+      "SigningKey": "TrNsUjfTvo8M4OHFsr/MlqkYZ97KVwaTkUG/ZfSQ9nE=",
+      "RequireHttps": false,
+
+      // The access credential expires on its own and nothing in the browser renews it: the
+      // refresh endpoint exists (POST /api/auth/refresh) but no page calls it, so the default
+      // five minutes would sign every user out mid-sentence, silently. Until a client-side
+      // renewal ships, the credential is given a working day; the refresh credential still
+      // bounds the whole grant at its own default of seven days.
+      "AccessTokenLifetime": "12:00:00",
+      "TokenStorePath": "./data/tokens",
+      "ApplicationId": "kleenestar.core.kleenestarapplication"
+    },
+
     "PackagePath": "./packages",
     "AssetPath": "./assets",
     "DataPath": "./data",
