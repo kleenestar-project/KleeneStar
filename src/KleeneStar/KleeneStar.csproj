@@ -13,6 +13,9 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<Configurations>Debug;Release;DebugLocal</Configurations>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..</DockerfileContext>
+		<DockerfileFile>..\..\Dockerfile</DockerfileFile>
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(Configuration)' != 'DebugLocal'">
@@ -32,6 +35,10 @@
 	    <LogicalName>$(MSBuildProjectName).Assets.%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -248,7 +255,9 @@
 		</None>
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
+	<!-- packaging runs the built Windows executable, so it is skipped where there is none: on
+	     another OS, and inside a container build (the .NET SDK images set DOTNET_RUNNING_IN_CONTAINER) -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release' and '$(OS)' == 'Windows_NT' and '$(DOTNET_RUNNING_IN_CONTAINER)' != 'true'">
 		<Exec Command="$(SolutionDir)$(AssemblyName)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).exe -s $(SolutionDir)..\$(SolutionName).spec -c $(Configuration) -t $(TargetFramework) -o $(SolutionDir)..\pkg\$(Configuration)" />
 	</Target>
 

@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "KleeneStar": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/kleenestar",
+      "httpPort": 8080,
+      "useSSL": false,
+      "publishAllPorts": false
+    }
+  }
+}

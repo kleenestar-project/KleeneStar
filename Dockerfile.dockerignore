@@ -1,0 +1,31 @@
+# Ignore rules of ./Dockerfile. The build context is the workspace folder above this repository,
+# which is not itself a repository, so the rules live beside the Dockerfile (BuildKit reads
+# <Dockerfile>.dockerignore) rather than at the root of the context.
+
+# everything but the five repositories the image is built from
+*
+!KleeneStar/
+!KleeneStar.Core/
+!KleeneStar.Model/
+!KleeneStar.Portal/
+!KleeneStar.Templates/
+
+# build output, tooling and version control
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.git/
+**/TestResults/
+**/*.user
+**/node_modules/
+
+# tests and documentation are not part of the image
+**/*.Test/
+**/docs/
+
+# runtime state of a local checkout: never bake a developer's database, tokens or index in
+KleeneStar/src/KleeneStar/data/db/*.db*
+KleeneStar/src/KleeneStar/data/tokens/
+KleeneStar/src/KleeneStar/data/index/
+KleeneStar/pkg/

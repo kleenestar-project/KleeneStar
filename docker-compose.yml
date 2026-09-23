@@ -1,0 +1,31 @@
+# KleeneStar with Docker Compose.
+#
+#   cd KleeneStar
+#   cp .env.example .env        # then set KLEENESTAR_SIGNING_KEY
+#   docker compose up --build
+#
+# The application answers on http://localhost:8080/kleenestar (the portal on /portal). The
+# database, the token store and the search index live in the volume "kleenestar-data" and survive
+# a rebuild; "docker compose down -v" removes them and the next start seeds afresh.
+
+services:
+  kleenestar:
+    image: kleenestar:latest
+    build:
+      # the workspace folder holding the KleeneStar repositories side by side
+      context: ..
+      dockerfile: KleeneStar/Dockerfile
+    ports:
+      - "${KLEENESTAR_PORT:-8080}:8080"
+    environment:
+      # a signing key of this installation's own - the one in settings/webexpress.settings.json
+      # is published with the source; generate one with: openssl rand -base64 32
+      WEBEXPRESS_WebExpress__Authentication__SigningKey: ${KLEENESTAR_SIGNING_KEY:?set KLEENESTAR_SIGNING_KEY in .env (openssl rand -base64 32)}
+    volumes:
+      - kleenestar-data:/app/data
+      - kleenestar-packages:/app/packages
+    restart: unless-stopped
+
+volumes:
+  kleenestar-data:
+  kleenestar-packages:

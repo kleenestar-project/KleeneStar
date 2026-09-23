@@ -54,6 +54,28 @@ Optional environment variables to customize the installation:
 | `KLEENESTAR_BRANCH`  | Branch checked out for all repositories            | `develop`    |
 | `KLEENESTAR_NO_RUN`  | Set to `1` to only build and skip starting the app | (unset)      |
 
+## Docker
+
+**KleeneStar** runs as a container. The image is built from the folder that holds the repositories side by side (the host references its siblings), so check them out as the quick install does and build from this repository:
+
+```
+cd KleeneStar/KleeneStar
+cp .env.example .env        # set KLEENESTAR_SIGNING_KEY
+docker compose up --build
+```
+
+**KleeneStar** then answers on [http://localhost:8080/kleenestar](http://localhost:8080/kleenestar), the portal on `/portal`.
+
+| Variable (`.env`)        | Description                                                                                          |
+|--------------------------|------------------------------------------------------------------------------------------------------|
+| `KLEENESTAR_SIGNING_KEY` | Required. Signing key of the sign-in tokens, at least 256 random bits in Base64 (`openssl rand -base64 32`). |
+| `KLEENESTAR_PORT`        | Port on the host, default `8080`.                                                                     |
+
+- The database, the token store and the search index live in the volume `kleenestar-data`; `docker compose down -v` removes them and the next start seeds afresh.
+- Any setting can be overridden with an environment variable prefixed `WEBEXPRESS_` (for example `WEBEXPRESS_Plugins__kleenestar.core__Database__ConnectionString`); see `src/KleeneStar/settings/readme.md`.
+- Without Compose: `docker build -f KleeneStar/Dockerfile --build-context nuget=<feed folder> -t kleenestar .` from the workspace folder.
+- In Visual Studio, pick the launch profile **Container (Dockerfile)**; set the environment variable `WEBEXPRESS_FEED` to the feed folder for the image build.
+
 ## Demo accounts
 
 A fresh installation is seeded with demo data, including four accounts. All of them sign in with the password **`kleenestar`** (user name or e-mail address):
