@@ -25,10 +25,46 @@ through `WEBEXPRESS_WebExpress__Authentication__SigningKey`.
 refuses the `__Host-`-prefixed cookie, the credential never arrives and every request stays
 anonymous. An https deployment removes the value and keeps the protected cookie names.
 
-The access credential is given a working day (`AccessTokenLifetime`) rather than the framework's
-five minutes, because nothing in the browser renews it yet — the refresh endpoint exists
-(`POST /api/auth/refresh`), but no page calls it, so a short-lived credential would sign users
-out mid-sentence and without a word.
+The access credential lives an hour (`AccessTokenLifetime`) and every page renews it shortly
+before it ends (`sessionrefresh.js` calls `POST /api/auth/refresh`); the refresh credential bounds
+the whole sign-in at seven days. Signing out, ending a session on the profile and locking an
+account take effect on the next request regardless of the lifetime: KleeneStar checks every
+request against the token store and the account's state.
+
+One sign-in serves the core and the portal: a token is bound to the application it was issued
+for, and the portal accepts the core's.
+
+## Accounts and passwords
+
+The sign-in checks the password of an internal account against its stored hash. The seeded demo
+accounts (`admin`, `alice.engineer`, `marketing.user`, `support.user`) sign in with `kleenestar`;
+an installation that keeps them past a demonstration gives them passwords of their own - the
+owner on the profile's security page, or through a one-time link an administrator creates in the
+identity settings.
+
+External sources are configured under `Plugins:kleenestar.core:Authentication`. An OpenID Connect
+source is one entry of `OpenIdConnect`:
+
+```json
+"Authentication": {
+  "OpenIdConnect": [
+    {
+      "Key": "entra",
+      "Name": "Microsoft Entra ID",
+      "Authority": "https://login.microsoftonline.com/<tenant>/v2.0",
+      "ClientId": "<client id>",
+      "ClientSecret": "<client secret>",
+      "RedirectUri": "https://<host>/api/auth/callback?application=<application id>&provider=entra",
+      "Provision": false
+    }
+  ]
+}
+```
+
+Authority and callback must be https. Without `Provision`, an administrator creates the account
+with the source's key as its sign-in, and its first sign-in claims it by verified e-mail address.
+Keep the client secret out of the repository, for instance in
+`WEBEXPRESS_Plugins__kleenestar.core__Authentication__OpenIdConnect__0__ClientSecret`.
 
 A plugin's file is shipped with its package and never overwritten by a package update; a value
 put under the same path in `webexpress.settings.json` overrides it without touching the file.

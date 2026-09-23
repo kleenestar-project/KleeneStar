@@ -54,6 +54,19 @@ Optional environment variables to customize the installation:
 | `KLEENESTAR_BRANCH`  | Branch checked out for all repositories            | `develop`    |
 | `KLEENESTAR_NO_RUN`  | Set to `1` to only build and skip starting the app | (unset)      |
 
+## Demo accounts
+
+A fresh installation is seeded with demo data, including four accounts. All of them sign in with the password **`kleenestar`** (user name or e-mail address):
+
+| User name        | E-mail                          | Group       |
+|------------------|---------------------------------|-------------|
+| `admin`          | `admin@kleenestar.org`          | Admin       |
+| `alice.engineer` | `alice.engineer@kleenestar.org` | Engineering |
+| `marketing.user` | `marketer@kleenestar.org`       | Marketing   |
+| `support.user`   | `support@kleenestar.org`        | Support     |
+
+The demo password is published with the source. An installation that keeps these accounts beyond a demonstration must give them passwords of their own: the owner changes it under *Profile → Security*, or an administrator creates a one-time password link in the identity settings.
+
 # Legal & Licensing
 
 **KleeneStar** is released under the MIT License, a permissive open-source license that allows reuse, modification, and distribution with minimal restrictions. You're free to use **KleeneStar** in personal, academic, or commercial projects, just include the original copyright notice.

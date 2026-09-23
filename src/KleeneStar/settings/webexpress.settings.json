@@ -44,12 +44,13 @@
       "SigningKey": "TrNsUjfTvo8M4OHFsr/MlqkYZ97KVwaTkUG/ZfSQ9nE=",
       "RequireHttps": false,
 
-      // The access credential expires on its own and nothing in the browser renews it: the
-      // refresh endpoint exists (POST /api/auth/refresh) but no page calls it, so the default
-      // five minutes would sign every user out mid-sentence, silently. Until a client-side
-      // renewal ships, the credential is given a working day; the refresh credential still
-      // bounds the whole grant at its own default of seven days.
-      "AccessTokenLifetime": "12:00:00",
+      // The access credential is renewed by the pages themselves (sessionrefresh.js calls
+      // POST /api/auth/refresh shortly before it ends), so it can be short. An hour rather than
+      // the framework's five minutes keeps a laptop that slept a while signed in until the tab
+      // is looked at again; the refresh credential bounds the whole grant at its default of
+      // seven days. Signing out, ending a session and locking an account take effect at once
+      // regardless - KleeneStar checks every request against the token store.
+      "AccessTokenLifetime": "01:00:00",
       "TokenStorePath": "./data/tokens",
       "ApplicationId": "kleenestar.core.kleenestarapplication"
     },
