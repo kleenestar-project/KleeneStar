@@ -8,17 +8,18 @@ namespace KleeneStar
     internal class Program
     {
         /// <summary>
-        /// The entry point of the WebExpress.
+        /// The entry point of the KleeneStar application.
         /// </summary>
         /// <param name="args">Command-line arguments passed to the application.</param>
-        private static void Main(string[] args)
+        /// <returns>The exit code of the application.</returns>
+        private static int Main(string[] args)
         {
             var app = new WebExpress.WebCore.WebEx()
             {
                 Name = Assembly.GetExecutingAssembly().GetName().Name
             };
 
-            app.Execution(args);
+            return app.Execution(args);
         }
     }
 }
