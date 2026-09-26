@@ -48,11 +48,11 @@ dotnet run
 
 Optional environment variables to customize the installation:
 
-| Variable             | Description                                        | Default      |
-|----------------------|----------------------------------------------------|--------------|
-| `KLEENESTAR_DIR`     | Installation directory                             | `KleeneStar` |
-| `KLEENESTAR_BRANCH`  | Branch checked out for all repositories            | `develop`    |
-| `KLEENESTAR_NO_RUN`  | Set to `1` to only build and skip starting the app | (unset)      |
+|Variable            |Description                                        | Default
+|--------------------|---------------------------------------------------|--------------
+|`KLEENESTAR_DIR`    |Installation directory                             | `KleeneStar`
+|`KLEENESTAR_BRANCH` |Branch checked out for all repositories            | `develop`
+|`KLEENESTAR_NO_RUN` |Set to `1` to only build and skip starting the app | (unset)
 
 ## Docker
 
@@ -64,12 +64,19 @@ cp .env.example .env        # set KLEENESTAR_SIGNING_KEY
 docker compose up --build
 ```
 
-**KleeneStar** then answers on [http://localhost:8080/kleenestar](http://localhost:8080/kleenestar), the portal on `/portal`.
+**KleeneStar** then answers on [http://ks:8080/kleenestar](http://ks:8080/kleenestar), the portal on `/portal`. Add the following entry to the host's `hosts` file (on Windows, open `%SystemRoot%\\System32\\drivers\\etc\\hosts` as administrator) before opening that address:
 
-| Variable (`.env`)        | Description                                                                                          |
-|--------------------------|------------------------------------------------------------------------------------------------------|
-| `KLEENESTAR_SIGNING_KEY` | Required. Signing key of the sign-in tokens, at least 256 random bits in Base64 (`openssl rand -base64 32`). |
-| `KLEENESTAR_PORT`        | Port on the host, default `8080`.                                                                     |
+```
+127.0.0.1 ks
+```
+
+Docker's container name is `ks`; the `hosts` entry makes that name resolvable from the host browser.
+
+|Variable (`.env`)         |Description
+|--------------------------|---------------------------------------------------
+|`KLEENESTAR_SIGNING_KEY`  | Required. Signing key of the sign-in tokens, at least 256 random bits in Base64 (`openssl rand -base64 32`).
+|`KLEENESTAR_PORT`         | Port on the host, default `8080`.
+|`KLEENESTAR_EXTERNAL_URI` | Public base URI for redirects and generated absolute URLs; set this to the reverse proxy or public DNS address.
 
 - The database, the token store and the search index live in the volume `kleenestar-data`; `docker compose down -v` removes them and the next start seeds afresh.
 - Any setting can be overridden with an environment variable prefixed `WEBEXPRESS_` (for example `WEBEXPRESS_Plugins__kleenestar.core__Database__ConnectionString`); see `src/KleeneStar/settings/readme.md`.
@@ -80,12 +87,12 @@ docker compose up --build
 
 A fresh installation is seeded with demo data, including four accounts. All of them sign in with the password **`kleenestar`** (user name or e-mail address):
 
-| User name        | E-mail                          | Group       |
-|------------------|---------------------------------|-------------|
-| `admin`          | `admin@kleenestar.org`          | Admin       |
-| `alice.engineer` | `alice.engineer@kleenestar.org` | Engineering |
-| `marketing.user` | `marketer@kleenestar.org`       | Marketing   |
-| `support.user`   | `support@kleenestar.org`        | Support     |
+|User name        |E-mail                          |Group
+|-----------------|--------------------------------|------------
+|`admin`          |`admin@kleenestar.org`          |Admin
+|`alice.engineer` |`alice.engineer@kleenestar.org` |Engineering
+|`marketing.user` |`marketer@kleenestar.org`       |Marketing
+|`support.user`   |`support@kleenestar.org`        |Support
 
 The demo password is published with the source. An installation that keeps these accounts beyond a demonstration must give them passwords of their own: the owner changes it under *Profile → Security*, or an administrator creates a one-time password link in the identity settings.
 

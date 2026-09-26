@@ -23,9 +23,10 @@ FROM scratch AS nuget
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 
-# listen on every interface and on a port an unprivileged user may bind; the shipped settings
-# name http://localhost/ (port 80), which is unreachable from outside a container
-ENV WEBEXPRESS_WebExpress__Endpoints__0__Uri=http://*:8080/
+# Listen on all container interfaces so Docker can forward requests to port 8080. The external
+# URI stays separate so a reverse proxy or port mapping never leaks the container address.
+ENV WEBEXPRESS_WebExpress__Endpoints__0__Uri=http://0.0.0.0:8080/
+ENV WEBEXPRESS_WebExpress__ExternalUri=http://localhost:8080/
 EXPOSE 8080
 USER app
 
@@ -67,12 +68,13 @@ WORKDIR /app
 
 COPY --from=build --chown=app:app /app/publish .
 
-# everything the application writes lives under data/ (database, token store, search index,
-# generated icons) and packages/ (installed plugin packages); both belong to the unprivileged user
+# everything the application writes lives under data/ (database, token store and search index),
+# assets/ (generated assets) and packages/ (installed plugin packages); all belong to the
+# unprivileged user
 USER root
-RUN mkdir -p /app/data/db /app/data/tokens /app/packages \
-    && chown -R app:app /app/data /app/packages
+RUN mkdir -p /app/data/db /app/data/tokens /app/packages /app/assets \
+    && chown -R app:app /app/data /app/packages /app/assets
 USER app
 
-VOLUME ["/app/data", "/app/packages"]
-ENTRYPOINT ["dotnet", "KleeneStar.dll"]
+VOLUME ["/app/data", "/app/packages", "/app/assets"]
+ENTRYPOINT ["/usr/share/dotnet/dotnet", "KleeneStar.dll"]

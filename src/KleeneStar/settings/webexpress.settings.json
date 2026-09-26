@@ -15,8 +15,14 @@
 
     // The addresses the server listens on. An https endpoint also needs "PfxFile" and "Password".
     "Endpoints": [
-      { "Uri": "http://localhost/" }
+      {
+        "Uri": "http://localhost:80/"
+      }
     ],
+
+    // The public base address used in generated absolute URLs. Keep it separate from the
+    // endpoint URI when a reverse proxy or container exposes the application.
+    "ExternalUri": "http://localhost/",
 
     // Optional fine-tuning of the underlying Kestrel server. A value left out keeps its default.
     "Kestrel": {

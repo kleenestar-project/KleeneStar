@@ -7,32 +7,6 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Folder Name="/WebExpress/">
-    <!-- the framework source, referenced by project under DebugLocal only (Debug and Release use
-         the WebExpress packages). Listed so a DebugLocal restore in Visual Studio finds the
-         projects the KleeneStar projects then reference; not built in the other configurations.
-         Needs the WebExpress repositories cloned (or linked) beside the KleeneStar ones. -->
-    <Project Path="../../WebExpress.WebCore/src/WebExpress.WebCore/WebExpress.WebCore.csproj">
-      <BuildType Solution="DebugLocal|*" Project="DebugLocal" />
-      <Build Solution="Debug|*" Project="false" />
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="../../WebExpress.WebIndex/src/WebExpress.WebIndex/WebExpress.WebIndex.csproj">
-      <BuildType Solution="DebugLocal|*" Project="DebugLocal" />
-      <Build Solution="Debug|*" Project="false" />
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="../../WebExpress.WebUI/src/WebExpress.WebUI/WebExpress.WebUI.csproj">
-      <BuildType Solution="DebugLocal|*" Project="DebugLocal" />
-      <Build Solution="Debug|*" Project="false" />
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="../../WebExpress.WebApp/src/WebExpress.WebApp/WebExpress.WebApp.csproj">
-      <BuildType Solution="DebugLocal|*" Project="DebugLocal" />
-      <Build Solution="Debug|*" Project="false" />
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-  </Folder>
   <Project Path="../../KleeneStar.Core/src/KleeneStar.Core.Test/KleeneStar.Core.Test.csproj" />
   <Project Path="../../KleeneStar.Core/src/KleeneStar.Core/KleeneStar.Core.csproj" />
   <Project Path="../../KleeneStar.Model/src/KleeneStar.Model.Sqlite/KleeneStar.Model.Sqlite.csproj" />

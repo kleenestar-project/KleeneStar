@@ -11,6 +11,11 @@ file (`WEBEXPRESS_WebExpress__Culture`, `WEBEXPRESS_Plugins__kleenestar.core__Da
 - `kleenestar.core.settings.json` — the KleeneStar core plugin, under `Plugins:kleenestar.core`:
   the database provider, the provider assembly and the connection string.
 
+`WebExpress:Endpoints:*:Uri` is the address Kestrel listens on. `WebExpress:ExternalUri` is the
+public base address used for redirects and generated absolute URLs. Set the latter separately when
+the application runs in a container or behind a reverse proxy; Docker Compose maps
+`KLEENESTAR_EXTERNAL_URI` to `WEBEXPRESS_WebExpress__ExternalUri`.
+
 ## Authentication
 
 `WebExpress:Authentication` is **required**: the sign-in issues signed tokens instead of keeping

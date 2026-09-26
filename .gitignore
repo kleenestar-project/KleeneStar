@@ -64,3 +64,4 @@ nunit-*.xml
 # docker: local settings and the packages copied into the placeholder feed
 /.env
 /docker/feed/*.nupkg
+/src/KleeneStar/KleeneStar.csproj.user

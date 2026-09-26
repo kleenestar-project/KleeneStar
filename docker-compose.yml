@@ -4,28 +4,38 @@
 #   cp .env.example .env        # then set KLEENESTAR_SIGNING_KEY
 #   docker compose up --build
 #
-# The application answers on http://localhost:8080/kleenestar (the portal on /portal). The
-# database, the token store and the search index live in the volume "kleenestar-data" and survive
-# a rebuild; "docker compose down -v" removes them and the next start seeds afresh.
+# The application answers on http://localhost:8080/kleenestar after mapping ks to 127.0.0.1 in the host's
+# hosts file (the portal is on /portal). The
+# database, the token store and the search index live in the volume "kleenestar-data"; generated
+# assets live in "kleenestar-assets". Both survive a rebuild; "docker compose down -v" removes
+# them and the next start seeds afresh.
 
 services:
   kleenestar:
-    image: kleenestar:latest
+    hostname: ks
+    image: "kleenestarorg/kleenestar:0.0.3-alpha"
     build:
       # the workspace folder holding the KleeneStar repositories side by side
       context: ..
       dockerfile: KleeneStar/Dockerfile
+      additional_contexts:
+        nuget: ${WEBEXPRESS_FEED:?set WEBEXPRESS_FEED in .env to the folder containing the WebExpress packages}
     ports:
       - "${KLEENESTAR_PORT:-8080}:8080"
     environment:
       # a signing key of this installation's own - the one in settings/webexpress.settings.json
       # is published with the source; generate one with: openssl rand -base64 32
       WEBEXPRESS_WebExpress__Authentication__SigningKey: ${KLEENESTAR_SIGNING_KEY:?set KLEENESTAR_SIGNING_KEY in .env (openssl rand -base64 32)}
+      # Public base address for redirects and generated absolute URLs; it is intentionally
+      # independent from the container listener at http://0.0.0.0:8080/.
+      WEBEXPRESS_WebExpress__ExternalUri: ${KLEENESTAR_EXTERNAL_URI:-http://localhost:8080/}
     volumes:
       - kleenestar-data:/app/data
+      - kleenestar-assets:/app/assets
       - kleenestar-packages:/app/packages
     restart: unless-stopped
 
 volumes:
   kleenestar-data:
+  kleenestar-assets:
   kleenestar-packages:

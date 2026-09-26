@@ -6,8 +6,7 @@
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/kleenestar",
-      "httpPort": 8080,
+      "launchUrl": "http://localhost:8080/kleenestar",
       "useSSL": false,
       "publishAllPorts": false
     }
