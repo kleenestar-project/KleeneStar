@@ -80,6 +80,7 @@ Docker's container name is `ks`; the `hosts` entry makes that name resolvable fr
 
 - The database, the token store and the search index live in the volume `kleenestar-data`; `docker compose down -v` removes them and the next start seeds afresh.
 - Any setting can be overridden with an environment variable prefixed `WEBEXPRESS_` (for example `WEBEXPRESS_Plugins__kleenestar.core__Database__ConnectionString`); see `src/KleeneStar/settings/readme.md`.
+- The container reports its health: `GET http://ks:8080/health` answers `200` while the installation can serve (initialized, database reachable with the current schema, sign-in configured) and `503` otherwise, the reason going to the server log. `docker compose ps` shows the state; a Kubernetes deployment uses the same endpoint for its startup and readiness probes and `/health/live` for liveness. See [the health concept](https://github.com/kleenestar-project/KleeneStar.Core/blob/main/docs/kleenestar.health.md).
 - Without Compose: `docker build -f KleeneStar/Dockerfile --build-context nuget=<feed folder> -t kleenestar .` from the workspace folder.
 - In Visual Studio, pick the launch profile **Container (Dockerfile)**; set the environment variable `WEBEXPRESS_FEED` to the feed folder for the image build.
 

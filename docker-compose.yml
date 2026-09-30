@@ -9,6 +9,11 @@
 # database, the token store and the search index live in the volume "kleenestar-data"; generated
 # assets live in "kleenestar-assets". Both survive a rebuild; "docker compose down -v" removes
 # them and the next start seeds afresh.
+#
+# The image declares a health check against http://127.0.0.1:8080/health (see the Dockerfile);
+# "docker compose ps" shows starting/healthy/unhealthy, the reason for "unhealthy" is in the log
+# ("docker compose logs kleenestar"). Docker only records the state - "restart" below acts on a
+# process that ended, not on an unhealthy one.
 
 services:
   kleenestar:

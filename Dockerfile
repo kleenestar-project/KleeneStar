@@ -77,4 +77,17 @@ RUN mkdir -p /app/data/db /app/data/tokens /app/packages /app/assets \
 USER app
 
 VOLUME ["/app/data", "/app/packages", "/app/assets"]
+
+# Health: WebExpress answers GET /health on every listener - no sign-in, independent of the
+# context path - with 200 while the host runs, every declared application could be created (a
+# failed migration or seed fails this) and every health component of the installed plugins
+# passes (KleeneStar: database and schema, sign-in settings), and with 503 otherwise; the reason
+# is written to the server log, never into the response.
+# The aspnet image carries neither curl nor wget, so the probe speaks HTTP through bash's
+# /dev/tcp. The longest component budget is 3 s (the database), so the request gets 4 s and
+# Docker 5 s. The start period covers the first start, which migrates and seeds the database.
+# A port other than 8080 in the endpoint above has to be repeated here.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --start-interval=5s --retries=3 \
+    CMD ["timeout", "4", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080 && printf 'GET /health HTTP/1.1\\r\\nHost: 127.0.0.1\\r\\nConnection: close\\r\\n\\r\\n' >&3 && head -n 1 <&3 | grep -q '^HTTP/1\\.[01] 200 '"]
+
 ENTRYPOINT ["/usr/share/dotnet/dotnet", "KleeneStar.dll"]

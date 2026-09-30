@@ -255,9 +255,10 @@ This defines the operational environments in which **KleeneStar** can run and ou
 
 - **On-premises:** Fully installable in customer-owned data centers, considering data protection and compliance requirements.
 - **Container orchestration:** Support for operation in containerized environments (e.g., Kubernetes, OpenShift, Azure Kubernetes Service) for easy scaling and automated deployment.
+- **Health probes:** Every instance answers the unauthenticated WebExpress endpoint `/health` with `200` or `503`. The framework contributes the state of the host, including whether every application could be created; each plugin contributes checks for the dependencies it cannot serve without (the core: database and schema, sign-in settings). The response carries no diagnostics - those go to the server log. The Dockerfile declares it as `HEALTHCHECK`, Kubernetes uses it for startup and readiness probes and `/health/live` - the framework conditions alone - for liveness (see `KleeneStar.Core/docs/kleenestar.health.md`).
 - **Supported operating systems:** Primarily Linux-based server environments (e.g., Ubuntu, Red Hat Enterprise Linux) and Windows Server for specific integration scenarios.
 
-Example: An internationally operating enterprise runs **KleeneStar** in a Kubernetes cluster (OpenShift) in its private cloud. The individual core and module containers are deployed via Helm charts; configurations (JSON settings) are mounted as ConfigMaps. Scaling occurs automatically based on load metrics, and updates are applied via rolling update without downtime.
+Example: An internationally operating enterprise runs **KleeneStar** in a Kubernetes cluster (OpenShift) in its private cloud. The individual core and module containers are deployed via Helm charts; configurations (JSON settings) are mounted as ConfigMaps. Scaling occurs automatically based on load metrics, and updates are applied via rolling update without downtime: a new pod receives traffic only once its readiness probe on `/health` passes.
 
 ## Integration and Communication Patterns
 
