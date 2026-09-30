@@ -24,6 +24,13 @@
     // endpoint URI when a reverse proxy or container exposes the application.
     "ExternalUri": "http://localhost/",
 
+    // The server root "/". The host runs two applications (KleeneStar and the portal), so without
+    // a choice the framework answers "/" with an overview listing both; this sends it to
+    // KleeneStar. The portal stays reachable under /portal.
+    "Root": {
+      "ApplicationId": "kleenestar.core.kleenestarapplication"
+    },
+
     // Optional fine-tuning of the underlying Kestrel server. A value left out keeps its default.
     "Kestrel": {
       "MaxConcurrentConnections": 300,

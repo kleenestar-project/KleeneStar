@@ -39,6 +39,9 @@ services:
       - kleenestar-assets:/app/assets
       - kleenestar-packages:/app/packages
     restart: unless-stopped
+    # the image shuts down gracefully (WEBEXPRESS_WebExpress__Shutdown=graceful) and drains for up
+    # to 30 s; Docker's default of 10 s would kill it in the middle of that
+    stop_grace_period: 45s
 
 volumes:
   kleenestar-data:

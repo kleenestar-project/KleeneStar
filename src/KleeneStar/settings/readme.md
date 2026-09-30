@@ -14,7 +14,18 @@ file (`WEBEXPRESS_WebExpress__Culture`, `WEBEXPRESS_Plugins__kleenestar.core__Da
 `WebExpress:Endpoints:*:Uri` is the address Kestrel listens on. `WebExpress:ExternalUri` is the
 public base address used for redirects and generated absolute URLs. Set the latter separately when
 the application runs in a container or behind a reverse proxy; Docker Compose maps
-`KLEENESTAR_EXTERNAL_URI` to `WEBEXPRESS_WebExpress__ExternalUri`.
+`KLEENESTAR_EXTERNAL_URI` to `WEBEXPRESS_WebExpress__ExternalUri`. The absolute links KleeneStar
+hands out itself - the one-time password reset link - are built on `ExternalUri` as well, so it
+has to name the address users actually reach, scheme included.
+
+`WebExpress:Root` decides what the server root `/` answers. The host runs two applications, and
+without a choice the framework shows an overview of both; `ApplicationId` sends `/` to KleeneStar.
+`"RedirectEnabled": false` brings the overview back.
+
+`WebExpress:Shutdown` is `immediate` unless set: stopping the server aborts running requests. The
+container image sets it to `graceful` (`WEBEXPRESS_WebExpress__Shutdown`), which lets admitted
+requests finish within `ShutdownTimeoutSeconds` (default 30) - the container runtime has to wait
+longer than that before it kills the process.
 
 ## Authentication
 

@@ -27,6 +27,13 @@ WORKDIR /app
 # URI stays separate so a reverse proxy or port mapping never leaks the container address.
 ENV WEBEXPRESS_WebExpress__Endpoints__0__Uri=http://0.0.0.0:8080/
 ENV WEBEXPRESS_WebExpress__ExternalUri=http://localhost:8080/
+
+# Stopping the container (SIGTERM) lets admitted requests and background work finish instead of
+# aborting them: the server answers /health with 503 at once, drains for at most
+# ShutdownTimeoutSeconds (30 s by default) and then releases its resources. The runtime has to
+# wait longer than that before it kills the process - stop_grace_period in docker-compose.yml,
+# terminationGracePeriodSeconds in Kubernetes.
+ENV WEBEXPRESS_WebExpress__Shutdown=graceful
 EXPOSE 8080
 USER app
 
