@@ -58,6 +58,21 @@ an installation that keeps them past a demonstration gives them passwords of the
 owner on the profile's security page, or through a one-time link an administrator creates in the
 identity settings.
 
+## Mail
+
+`WebExpress:Email` is WebExpress's outgoing mail, shared by every application of the host and
+**off** as shipped (`Enabled: false`). Name a mail server in a profile and switch it on, and
+KleeneStar mails the one-time password link an administrator creates to the account's e-mail
+address - the dialog still shows the link, because a message the server accepted may never
+arrive, and says whether sending worked. The System settings then show an Email page (read only).
+The settings are read at start; a change needs a restart.
+
+Keep the server's account out of the repository:
+`WEBEXPRESS_WebExpress__Email__Profiles__default__UserName` and `…__Password`. `Security` is
+`StartTls` (port 587), `SslOnConnect` (465) or `None` (a local relay only; it refuses credentials).
+With several replicas, give them a shared `WebExpress:Cluster:StatePath` - the mail delivery
+remembers there which links were already sent, so a link is mailed once.
+
 External sources are configured under `Plugins:kleenestar.core:Authentication`. An OpenID Connect
 source is one entry of `OpenIdConnect`:
 

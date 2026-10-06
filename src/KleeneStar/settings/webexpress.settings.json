@@ -68,6 +68,26 @@
       "ApplicationId": "kleenestar.core.kleenestarapplication"
     },
 
+    // Outgoing mail, shared by every application of the host. Off until a deployment names a
+    // mail server: KleeneStar then also mails the one-time password links an administrator
+    // creates to the account's address (they are still shown in the dialog), and the System
+    // settings gain an Email page. Read at start - a change needs a restart. Account and
+    // password of the server are secrets: pass them as
+    // WEBEXPRESS_WebExpress__Email__Profiles__default__UserName / __Password, never here.
+    "Email": {
+      "Enabled": false,
+      "DefaultProfile": "default",
+      "Profiles": {
+        "default": {
+          "Provider": "smtp",
+          "From": "KleeneStar <kleenestar@example.org>",
+          "Host": "smtp.example.org",
+          "Port": 587,
+          "Security": "StartTls"
+        }
+      }
+    },
+
     "PackagePath": "./packages",
     "AssetPath": "./assets",
     "DataPath": "./data",
