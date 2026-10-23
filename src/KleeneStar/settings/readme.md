@@ -97,6 +97,25 @@ with the source's key as its sign-in, and its first sign-in claims it by verifie
 Keep the client secret out of the repository, for instance in
 `WEBEXPRESS_Plugins__kleenestar.core__Authentication__OpenIdConnect__0__ClientSecret`.
 
+LDAP directories and Active Directory come with the `KleeneStar.Ldap` plugin and are configured
+under its own id, `Plugins:kleenestar.ldap:Directories`, one entry per directory:
+
+```json
+"Plugins": {
+  "kleenestar.ldap": {
+    "Directories": [
+      { "Key": "ad", "Name": "Corporate directory", "Server": "dc01.corp.example.com",
+        "UseSsl": true, "BindDnFormat": "{0}@corp.example.com" }
+    ]
+  }
+}
+```
+
+Instead of `BindDnFormat`, a directory can be searched by a service account (`ServiceDn`,
+`ServicePassword`, `SearchBase`, `SearchFilter`, default `(sAMAccountName={0})`). The accounts are
+created beforehand with the directory's key as their sign-in. Keep the service password out of the
+repository, for instance in `WEBEXPRESS_Plugins__kleenestar.ldap__Directories__0__ServicePassword`.
+
 A plugin's file is shipped with its package and never overwritten by a package update; a value
 put under the same path in `webexpress.settings.json` overrides it without touching the file.
 The files are meant to be versioned in Git, following the architecture's "configuration over

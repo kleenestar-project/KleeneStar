@@ -9,6 +9,12 @@
   </Configurations>
   <Project Path="../../KleeneStar.Core/src/KleeneStar.Core.Test/KleeneStar.Core.Test.csproj" />
   <Project Path="../../KleeneStar.Core/src/KleeneStar.Core/KleeneStar.Core.csproj" />
+  <Project Path="../../KleeneStar.Ldap/src/KleeneStar.Ldap.Test/KleeneStar.Ldap.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Ldap/src/KleeneStar.Ldap/KleeneStar.Ldap.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
   <Project Path="../../KleeneStar.Model/src/KleeneStar.Model.Sqlite/KleeneStar.Model.Sqlite.csproj" />
   <Project Path="../../KleeneStar.Model/src/Kleenestar.Model.Test/Kleenestar.Model.Test.csproj" />
   <Project Path="../../KleeneStar.Model/src/KleeneStar.Model/KleeneStar.Model.csproj" />

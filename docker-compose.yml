@@ -18,7 +18,7 @@
 services:
   kleenestar:
     hostname: ks
-    image: "kleenestarorg/kleenestar:0.0.3-alpha"
+    image: "rschwarzer/kleenestar:0.0.3-alpha"
     build:
       # the workspace folder holding the KleeneStar repositories side by side
       context: ..

@@ -17,7 +17,7 @@
 		<ContainerDevelopmentMode>Regular</ContainerDevelopmentMode>
 		<DockerfileContext>..</DockerfileContext>
 		<DockerfileFile>..\..\Dockerfile</DockerfileFile>
-		<DockerfileRepository>kleenestarorg/kleenestar</DockerfileRepository>
+		<DockerfileRepository>rschwarzer/kleenestar</DockerfileRepository>
 		<ContainerImageTag>$(VERSION)-alpha</ContainerImageTag>
 		<DockerfileBuildArguments Condition="'$(WEBEXPRESS_FEED)' != ''">--build-context nuget=$(WEBEXPRESS_FEED)</DockerfileBuildArguments>
 		<DockerfileRunArguments>-p 8080:8080</DockerfileRunArguments>
@@ -54,6 +54,7 @@
 	  <ProjectReference Include="..\..\..\KleeneStar.Core\src\KleeneStar.Core\KleeneStar.Core.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Portal\src\KleeneStar.Portal\KleeneStar.Portal.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Templates\src\KleeneStar.Templates\KleeneStar.Templates.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Ldap\src\KleeneStar.Ldap\KleeneStar.Ldap.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
