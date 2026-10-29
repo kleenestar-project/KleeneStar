@@ -42,7 +42,8 @@ refuses the `__Host-`-prefixed cookie, the credential never arrives and every re
 anonymous. An https deployment removes the value and keeps the protected cookie names.
 
 The access credential lives an hour (`AccessTokenLifetime`) and every page renews it shortly
-before it ends (`sessionrefresh.js` calls `POST /api/auth/refresh`); the refresh credential bounds
+before it ends (WebExpress's `webexpress.webui.session.js` reads the `wx-auth-renew` hint cookie and
+calls `POST /api/auth/refresh`); the refresh credential bounds
 the whole sign-in at seven days. Signing out, ending a session on the profile and locking an
 account take effect on the next request regardless of the lifetime: KleeneStar checks every
 request against the token store and the account's state.

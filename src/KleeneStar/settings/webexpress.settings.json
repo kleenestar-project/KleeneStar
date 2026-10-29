@@ -57,7 +57,8 @@
       "SigningKey": "TrNsUjfTvo8M4OHFsr/MlqkYZ97KVwaTkUG/ZfSQ9nE=",
       "RequireHttps": false,
 
-      // The access credential is renewed by the pages themselves (sessionrefresh.js calls
+      // The access credential is renewed by the pages themselves (WebExpress's
+      // webexpress.webui.session.js reads the wx-auth-renew hint cookie and calls
       // POST /api/auth/refresh shortly before it ends), so it can be short. An hour rather than
       // the framework's five minutes keeps a laptop that slept a while signed in until the tab
       // is looked at again; the refresh credential bounds the whole grant at its default of
