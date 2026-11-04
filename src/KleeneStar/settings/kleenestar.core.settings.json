@@ -16,6 +16,14 @@
         "Provider": "Microsoft.Data.Sqlite",
         "Assembly": "KleeneStar.Model.Sqlite",
         "ConnectionString": "Data Source=data/db/kleenestar.db"
+      },
+
+      // The object hierarchy (an object's parent/child containment). "MaxDepth" is the
+      // deepest level an object may sit at, a root object being level one; a move that would
+      // place any object deeper is refused. Existing deeper objects stay where they are and are
+      // reported in the log at start.
+      "Hierarchy": {
+        "MaxDepth": 32
       }
     }
   }
