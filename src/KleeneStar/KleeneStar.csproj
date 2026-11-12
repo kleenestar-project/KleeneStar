@@ -24,7 +24,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(Configuration)' != 'DebugLocal'">
-		<PackageReference Include="WebExpress.WebApp" Version="2.0.0-alpha" />
+		<PackageReference Include="WebExpress.WebApp" Version="2.0.1-alpha" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'DebugLocal'">
@@ -55,6 +55,8 @@
 	  <ProjectReference Include="..\..\..\KleeneStar.Portal\src\KleeneStar.Portal\KleeneStar.Portal.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Templates\src\KleeneStar.Templates\KleeneStar.Templates.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Ldap\src\KleeneStar.Ldap\KleeneStar.Ldap.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Automation\src\KleeneStar.Automation\KleeneStar.Automation.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Integration\src\KleeneStar.Integration\KleeneStar.Integration.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

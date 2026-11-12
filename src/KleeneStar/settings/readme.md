@@ -114,8 +114,18 @@ under its own id, `Plugins:kleenestar.ldap:Directories`, one entry per directory
 
 Instead of `BindDnFormat`, a directory can be searched by a service account (`ServiceDn`,
 `ServicePassword`, `SearchBase`, `SearchFilter`, default `(sAMAccountName={0})`). The accounts are
-created beforehand with the directory's key as their sign-in. Keep the service password out of the
-repository, for instance in `WEBEXPRESS_Plugins__kleenestar.ldap__Directories__0__ServicePassword`.
+created with the directory's key as their sign-in - by hand or by the plugin's synchronization.
+Keep the service password out of the repository, in
+`WEBEXPRESS_Plugins__kleenestar.ldap__Secrets__<key>__ServicePassword` - bound to the connection's
+key, not to its position, which moves when an earlier connection is deleted.
+
+The connections are managed on *Settings -> User management -> LDAP connections* (account
+administrators only). That page owns the plugin's file `kleenestar.ldap.settings.json` in this
+directory: it lists what the file holds, writes every change back into it (keeping its other
+sections, not its comments) and the change takes effect without a restart. Configure the
+directories either there or in that file, not in `webexpress.settings.json` - entries of the
+same list in two files are merged by position. LDAP, StartTLS and LDAPS work on every platform
+(a managed client, no native `libldap`); see `KleeneStar.Ldap/docs/kleenestar.ldap.md`.
 
 A plugin's file is shipped with its package and never overwritten by a package update; a value
 put under the same path in `webexpress.settings.json` overrides it without touching the file.

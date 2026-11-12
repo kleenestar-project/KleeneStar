@@ -2,13 +2,16 @@
 # which is not itself a repository, so the rules live beside the Dockerfile (BuildKit reads
 # <Dockerfile>.dockerignore) rather than at the root of the context.
 
-# everything but the five repositories the image is built from
+# everything but the eight repositories the image is built from
 *
 !KleeneStar/
 !KleeneStar.Core/
 !KleeneStar.Model/
 !KleeneStar.Portal/
 !KleeneStar.Templates/
+!KleeneStar.Automation/
+!KleeneStar.Integration/
+!KleeneStar.Ldap/
 
 # build output, tooling and version control
 **/bin/

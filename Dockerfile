@@ -3,13 +3,14 @@
 # KleeneStar container image.
 #
 # The build context is the folder that holds the KleeneStar repositories side by side
-# (KleeneStar, KleeneStar.Core, KleeneStar.Model, KleeneStar.Portal, KleeneStar.Templates) - the
+# (KleeneStar, KleeneStar.Core, KleeneStar.Model, KleeneStar.Portal, KleeneStar.Templates,
+# KleeneStar.Automation, KleeneStar.Integration, KleeneStar.Ldap) - the
 # host references its siblings by relative path. docker-compose.yml sets this up; by hand:
 #
 #   cd <workspace>          # the folder containing KleeneStar/, KleeneStar.Core/, ...
 #   docker build -f KleeneStar/Dockerfile --build-context nuget=<folder with WebExpress *.nupkg> -t kleenestar .
 #
-# WebExpress 2.0.0-alpha is not published on nuget.org. The named build context "nuget" hands the
+# WebExpress 2.0.1-alpha is not published on nuget.org. The named build context "nuget" hands the
 # folder with its packages (the local feed) to the build; without it the empty stage below stands
 # in and the restore only finds what nuget.org has.
 
@@ -52,6 +53,9 @@ COPY KleeneStar.Model/src/KleeneStar.Model/KleeneStar.Model.csproj KleeneStar.Mo
 COPY KleeneStar.Model/src/KleeneStar.Model.Sqlite/KleeneStar.Model.Sqlite.csproj KleeneStar.Model/src/KleeneStar.Model.Sqlite/
 COPY KleeneStar.Portal/src/KleeneStar.Portal/KleeneStar.Portal.csproj KleeneStar.Portal/src/KleeneStar.Portal/
 COPY KleeneStar.Templates/src/KleeneStar.Templates/KleeneStar.Templates.csproj KleeneStar.Templates/src/KleeneStar.Templates/
+COPY KleeneStar.Automation/src/KleeneStar.Automation/KleeneStar.Automation.csproj KleeneStar.Automation/src/KleeneStar.Automation/
+COPY KleeneStar.Integration/src/KleeneStar.Integration/KleeneStar.Integration.csproj KleeneStar.Integration/src/KleeneStar.Integration/
+COPY KleeneStar.Ldap/src/KleeneStar.Ldap/KleeneStar.Ldap.csproj KleeneStar.Ldap/src/KleeneStar.Ldap/
 RUN dotnet restore KleeneStar/src/KleeneStar/KleeneStar.csproj --configfile nuget.config
 
 COPY KleeneStar/src/KleeneStar/ KleeneStar/src/KleeneStar/
@@ -60,6 +64,9 @@ COPY KleeneStar.Model/src/KleeneStar.Model/ KleeneStar.Model/src/KleeneStar.Mode
 COPY KleeneStar.Model/src/KleeneStar.Model.Sqlite/ KleeneStar.Model/src/KleeneStar.Model.Sqlite/
 COPY KleeneStar.Portal/src/KleeneStar.Portal/ KleeneStar.Portal/src/KleeneStar.Portal/
 COPY KleeneStar.Templates/src/KleeneStar.Templates/ KleeneStar.Templates/src/KleeneStar.Templates/
+COPY KleeneStar.Automation/src/KleeneStar.Automation/ KleeneStar.Automation/src/KleeneStar.Automation/
+COPY KleeneStar.Integration/src/KleeneStar.Integration/ KleeneStar.Integration/src/KleeneStar.Integration/
+COPY KleeneStar.Ldap/src/KleeneStar.Ldap/ KleeneStar.Ldap/src/KleeneStar.Ldap/
 
 # the Release post-build packaging runs a Windows executable and skips itself in a container
 # (DOTNET_RUNNING_IN_CONTAINER, set by this image); see KleeneStar.csproj
