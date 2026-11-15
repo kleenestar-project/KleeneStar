@@ -32,6 +32,12 @@
   <Project Path="../../KleeneStar.Model/src/KleeneStar.Model/KleeneStar.Model.csproj" />
   <Project Path="../../KleeneStar.Portal/src/KleeneStar.Portal.Test/KleeneStar.Portal.Test.csproj" />
   <Project Path="../../KleeneStar.Portal/src/KleeneStar.Portal/KleeneStar.Portal.csproj" />
+  <Project Path="../../KleeneStar.Seeder/src/KleeneStar.Seeder.Test/KleeneStar.Seeder.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Seeder/src/KleeneStar.Seeder/KleeneStar.Seeder.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
   <Project Path="../../KleeneStar.Templates/src/KleeneStar.Templates.Test/KleeneStar.Templates.Test.csproj" />
   <Project Path="../../KleeneStar.Templates/src/KleeneStar.Templates/KleeneStar.Templates.csproj" />
   <Project Path="../../KleeneStar.Theme/src/KleeneStar.Theme.Test/KleeneStar.Theme.Test.csproj">
