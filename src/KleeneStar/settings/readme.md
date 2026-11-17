@@ -48,8 +48,9 @@ the whole sign-in at seven days. Signing out, ending a session on the profile an
 account take effect on the next request regardless of the lifetime: KleeneStar checks every
 request against the token store and the account's state.
 
-One sign-in serves the core and the portal: a token is bound to the application it was issued
-for, and the portal accepts the core's.
+One sign-in serves the core and the portal: `ApplicationGroups` names both applications in the group
+`kleenestar`, so each accepts the tokens issued for the other. A deployment that removes the
+group leaves the portal anonymous for a core sign-in.
 
 ## Accounts and passwords
 

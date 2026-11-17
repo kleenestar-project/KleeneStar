@@ -66,7 +66,12 @@
       // regardless - KleeneStar checks every request against the token store.
       "AccessTokenLifetime": "01:00:00",
       "TokenStorePath": "./data/tokens",
-      "ApplicationId": "kleenestar.core.kleenestarapplication"
+      "ApplicationId": "kleenestar.core.kleenestarapplication",
+
+      // Core and portal accept each other's sign-in; their grants share the token store above.
+      "ApplicationGroups": {
+        "kleenestar": [ "kleenestar.core.kleenestarapplication", "kleenestar.portal.kleenestarportalapplication" ]
+      }
     },
 
     // Outgoing mail, shared by every application of the host. Off until a deployment names a
