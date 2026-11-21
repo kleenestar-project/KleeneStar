@@ -1,0 +1,108 @@
+{
+  // The settings of the web server. Every json file in this directory is merged into one
+  // configuration; this file is merged last, so its values win over those of the other files.
+  "WebExpress": {
+
+    // Log file. Mode: Off (no file), Append (keep adding) or Override (start afresh).
+    "Log": {
+      "Mode": "Off",
+      "Debug": false,
+      "Path": "/var/log/",
+      "Encoding": "utf-8",
+      "FileName": "webexpress.log",
+      "TimePattern": "dd.MM.yyyy HH:mm:ss"
+    },
+
+    // The addresses the server listens on. An https endpoint also needs "PfxFile" and "Password".
+    "Endpoints": [
+      {
+        "Uri": "http://localhost:80/"
+      }
+    ],
+
+    // The public base address used in generated absolute URLs. Keep it separate from the
+    // endpoint URI when a reverse proxy or container exposes the application.
+    "ExternalUri": "http://localhost/",
+
+    // The server root "/". The host runs two applications (KleeneStar and the portal), so without
+    // a choice the framework answers "/" with an overview listing both; this sends it to
+    // KleeneStar. The portal stays reachable under /portal.
+    "Root": {
+      "ApplicationId": "kleenestar.core.kleenestarapplication"
+    },
+
+    // Optional fine-tuning of the underlying Kestrel server. A value left out keeps its default.
+    "Kestrel": {
+      "MaxConcurrentConnections": 300,
+      "MaxRequestBodySize": 3000000000,
+      "MaxRequestHeadersTotalSize": 65536
+    },
+
+    "Culture": "en-US",
+
+    // The sign-in issues signed tokens instead of keeping a session on the server, and it
+    // refuses to run without this section: no key is invented per process, because one invented
+    // here would sign tokens the next start no longer accepts.
+    //
+    // "SigningKey" is at least 256 random bits, Base64. The one below belongs to this checkout
+    // and to nothing else - a deployment generates its own and keeps it out of the repository
+    // ("WEBEXPRESS_WebExpress__Authentication__SigningKey" is the environment variable for it).
+    //
+    // "RequireHttps" is false because the endpoint above is plain http: the browser refuses a
+    // "__Host-"-prefixed cookie over it, so the credential would never arrive and every request
+    // would be anonymous. An https deployment removes it and keeps the protected cookie names.
+    "Authentication": {
+      "Issuer": "kleenestar",
+      "Audience": "kleenestar",
+      "SigningKey": "TrNsUjfTvo8M4OHFsr/MlqkYZ97KVwaTkUG/ZfSQ9nE=",
+      "RequireHttps": false,
+
+      // The access credential is renewed by the pages themselves (WebExpress's
+      // webexpress.webui.session.js reads the wx-auth-renew hint cookie and calls
+      // POST /api/auth/refresh shortly before it ends), so it can be short. An hour rather than
+      // the framework's five minutes keeps a laptop that slept a while signed in until the tab
+      // is looked at again; the refresh credential bounds the whole grant at its default of
+      // seven days. Signing out, ending a session and locking an account take effect at once
+      // regardless - KleeneStar checks every request against the token store.
+      "AccessTokenLifetime": "01:00:00",
+      "TokenStorePath": "./data/tokens",
+      "ApplicationId": "kleenestar.core.kleenestarapplication",
+
+      // Core and portal accept each other's sign-in; their grants share the token store above.
+      "ApplicationGroups": {
+        "kleenestar": [ "kleenestar.core.kleenestarapplication", "kleenestar.portal.kleenestarportalapplication" ]
+      }
+    },
+
+    // Outgoing mail, shared by every application of the host. Off until a deployment names a
+    // mail server: KleeneStar then also mails the one-time password links an administrator
+    // creates to the account's address (they are still shown in the dialog), and the System
+    // settings gain an Email page. Read at start - a change needs a restart. Account and
+    // password of the server are secrets: pass them as
+    // WEBEXPRESS_WebExpress__Email__Profiles__default__UserName / __Password, never here.
+    "Email": {
+      "Enabled": false,
+      "DefaultProfile": "default",
+      "Profiles": {
+        "default": {
+          "Provider": "smtp",
+          "From": "KleeneStar <kleenestar@example.org>",
+          "Host": "smtp.example.org",
+          "Port": 587,
+          "Security": "StartTls"
+        }
+      }
+    },
+
+    "PackagePath": "./packages",
+    "AssetPath": "./assets",
+    "DataPath": "./data",
+    "ContextPath": ""
+  },
+
+  // The settings of the installed plugins, one section per plugin id. A plugin ships its
+  // defaults in its own file next to this one (KleeneStar's database settings live in
+  // kleenestar.core.settings.json); a value placed here overrides them.
+  "Plugins": {
+  }
+}

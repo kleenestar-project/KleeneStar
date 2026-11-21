@@ -1,0 +1,56 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="DebugLocal" />
+    <BuildType Name="Release" />
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="../../KleeneStar.Automation/src/KleeneStar.Automation.Test/KleeneStar.Automation.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Automation/src/KleeneStar.Automation/KleeneStar.Automation.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Core/src/KleeneStar.Core.Test/KleeneStar.Core.Test.csproj" />
+  <Project Path="../../KleeneStar.Core/src/KleeneStar.Core/KleeneStar.Core.csproj" />
+  <Project Path="../../KleeneStar.Help/src/KleeneStar.Help.Test/KleeneStar.Help.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Help/src/KleeneStar.Help/KleeneStar.Help.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Integration/src/KleeneStar.Integration.Test/KleeneStar.Integration.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Integration/src/KleeneStar.Integration/KleeneStar.Integration.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Ldap/src/KleeneStar.Ldap.Test/KleeneStar.Ldap.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Ldap/src/KleeneStar.Ldap/KleeneStar.Ldap.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Model/src/KleeneStar.Model.Sqlite/KleeneStar.Model.Sqlite.csproj" />
+  <Project Path="../../KleeneStar.Model/src/Kleenestar.Model.Test/Kleenestar.Model.Test.csproj" />
+  <Project Path="../../KleeneStar.Model/src/KleeneStar.Model/KleeneStar.Model.csproj" />
+  <Project Path="../../KleeneStar.Portal/src/KleeneStar.Portal.Test/KleeneStar.Portal.Test.csproj" />
+  <Project Path="../../KleeneStar.Portal/src/KleeneStar.Portal/KleeneStar.Portal.csproj" />
+  <Project Path="../../KleeneStar.Seeder/src/KleeneStar.Seeder.Test/KleeneStar.Seeder.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Seeder/src/KleeneStar.Seeder/KleeneStar.Seeder.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Templates/src/KleeneStar.Templates.Test/KleeneStar.Templates.Test.csproj" />
+  <Project Path="../../KleeneStar.Templates/src/KleeneStar.Templates/KleeneStar.Templates.csproj" />
+  <Project Path="../../KleeneStar.Theme/src/KleeneStar.Theme.Test/KleeneStar.Theme.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Theme/src/KleeneStar.Theme/KleeneStar.Theme.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="KleeneStar/KleeneStar.csproj" />
+</Solution>

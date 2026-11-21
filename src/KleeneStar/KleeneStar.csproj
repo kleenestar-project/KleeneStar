@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>0.0.2.0</Version>
-		<AssemblyVersion>0.0.2.0</AssemblyVersion>
+		<Version>0.0.3</Version>
+		<AssemblyVersion>$(VERSION).0</AssemblyVersion>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0</TargetFramework>
 		<ApplicationIcon>kleenestar.ico</ApplicationIcon>
@@ -13,10 +13,18 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<Configurations>Debug;Release;DebugLocal</Configurations>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<ContainerDevelopmentMode>Regular</ContainerDevelopmentMode>
+		<DockerfileContext>..</DockerfileContext>
+		<DockerfileFile>..\..\Dockerfile</DockerfileFile>
+		<DockerfileRepository>rschwarzer/kleenestar</DockerfileRepository>
+		<ContainerImageTag>$(VERSION)-alpha</ContainerImageTag>
+		<DockerfileBuildArguments Condition="'$(WEBEXPRESS_FEED)' != ''">--build-context nuget=$(WEBEXPRESS_FEED)</DockerfileBuildArguments>
+		<DockerfileRunArguments>-p 8080:8080</DockerfileRunArguments>
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(Configuration)' != 'DebugLocal'">
-		<PackageReference Include="WebExpress.WebApp" Version="0.0.11-alpha" />
+		<PackageReference Include="WebExpress.WebApp" Version="2.0.1-alpha" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'DebugLocal'">
@@ -35,177 +43,54 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\KleeneStar.Core\src\KleeneStar.Core\KleeneStar.Core.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Portal\src\KleeneStar.Portal\KleeneStar.Portal.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Templates\src\KleeneStar.Templates\KleeneStar.Templates.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Ldap\src\KleeneStar.Ldap\KleeneStar.Ldap.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Theme\src\KleeneStar.Theme\KleeneStar.Theme.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Automation\src\KleeneStar.Automation\KleeneStar.Automation.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Integration\src\KleeneStar.Integration\KleeneStar.Integration.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Help\src\KleeneStar.Help\KleeneStar.Help.csproj" />
+	</ItemGroup>
+
+	<!-- demonstration and test data: part of the Debug and DebugLocal builds; the Release build
+	     (package, container image) starts with the base data of KleeneStar.Model only -->
+	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+	  <ProjectReference Include="..\..\..\KleeneStar.Seeder\src\KleeneStar.Seeder\KleeneStar.Seeder.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="config\kleenestar.db.config.xml">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="config\webexpress.config.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\db\readme.md">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\absence.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\approval.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\asset.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\budget.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\bug.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\build.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\change.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\dashboard-fin.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\dashboard-dev.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\compliance.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\contract.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\costcenter.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\dashboard-ops.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\delivery.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\doc.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\employee.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\feature.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\forecast.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\incident.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\invoice.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\knowledge.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\onboarding.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\orgunit.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\po.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\policy.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\position.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\problem.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\rel.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\release.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\releaseplan.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\repo.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\requirement.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\roadmap.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\servicerequest.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\sprint.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\stakeholder.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\supplier.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\task.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\tender.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\ticket.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\training.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\usecase.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\vuln.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\cmdb.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\dev.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\fin.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\hr.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\pm.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\proc.svg">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="data\icons\sd.svg">
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="settings\*.json;data\db\readme.md;data\icons\*.svg">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
+	<!-- packaging runs the built Windows executable, so it is skipped where there is none: on
+	     another OS, and inside a container build (the .NET SDK images set DOTNET_RUNNING_IN_CONTAINER) -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release' and '$(OS)' == 'Windows_NT' and '$(DOTNET_RUNNING_IN_CONTAINER)' != 'true'">
 		<Exec Command="$(SolutionDir)$(AssemblyName)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).exe -s $(SolutionDir)..\$(SolutionName).spec -c $(Configuration) -t $(TargetFramework) -o $(SolutionDir)..\pkg\$(Configuration)" />
 	</Target>
 

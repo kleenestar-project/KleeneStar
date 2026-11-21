@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using WebExpress.WebCore;
-using WebExpress.WebCore.WebLog;
 
 namespace KleeneStar
 {
@@ -10,24 +8,18 @@ namespace KleeneStar
     internal class Program
     {
         /// <summary>
-        /// The entry point of the WebExpress.
+        /// The entry point of the KleeneStar application.
         /// </summary>
         /// <param name="args">Command-line arguments passed to the application.</param>
-        private static void Main(string[] args)
+        /// <returns>The exit code of the application.</returns>
+        private static int Main(string[] args)
         {
-            var app = new WebEx()
+            var app = new WebExpress.WebCore.WebEx()
             {
                 Name = Assembly.GetExecutingAssembly().GetName().Name
             };
 
-            app.Initialization += (s, e) =>
-            {
-                var log = WebEx.ComponentHub.LogManager.DefaultLog;
-                using var frame = new LogFrame(log, "KleeneStar startup");
-                log.Info($"{app.Name} version {Assembly.GetExecutingAssembly().GetName().Version} initializing...");
-            };
-
-            app.Execution(args);
+            return app.Execution(args);
         }
     }
 }
