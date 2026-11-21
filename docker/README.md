@@ -41,7 +41,7 @@ Optional environment variables:
 |Variable                         |Default                               |Description
 |---------------------------------|--------------------------------------|-----------------------------------------
 |`KLEENESTAR_DIR`                 |`/opt/kleenestar`                     |Installation directory (absolute path)
-|`KLEENESTAR_IMAGE`               |`rschwarzer/kleenestar:0.0.3-alpha`   |Image to run
+|`KLEENESTAR_IMAGE`               |`rschwarzer/kleenestar:0.0.4-alpha`   |Image to run
 |`KLEENESTAR_PORT`                |`80`                                  |Host port, mapped to container port `8080`
 |`KLEENESTAR_EXTERNAL_URI`        |`http://<hostname>:<port>/`           |Public base URI (without `:80` for port 80)
 |`KLEENESTAR_UID`                 |`1654`                                |Numeric user id of the container user
@@ -117,12 +117,12 @@ Parameters of the PowerShell script:
 |`-Repository` |`rschwarzer/kleenestar`                       |Image name in the registry
 |`-Feed`       |`$env:WEBEXPRESS_FEED`, else `docker/feed`    |Folder with packages nuget.org does not carry
 
-Both scripts check Docker, Buildx, the running daemon and the sibling repositories first. They need a Docker login with write access to the repository (`docker login`). If needed, they create the `multiarch` builder (driver `docker-container`), because the default builder cannot produce multi-platform images. They then push the image and print the manifest. The default tag is `rschwarzer/kleenestar:0.0.3-alpha`, the image `install.sh` runs; after publishing another tag, set `KLEENESTAR_IMAGE` on the next installer run.
+Both scripts check Docker, Buildx, the running daemon and the sibling repositories first. They need a Docker login with write access to the repository (`docker login`). If needed, they create the `multiarch` builder (driver `docker-container`), because the default builder cannot produce multi-platform images. They then push the image and print the manifest. The default tag is `rschwarzer/kleenestar:0.0.4-alpha`, the image `install.sh` runs; after publishing another tag, set `KLEENESTAR_IMAGE` on the next installer run.
 
 Verify the result:
 
 ```sh
-docker buildx imagetools inspect rschwarzer/kleenestar:0.0.3-alpha
+docker buildx imagetools inspect rschwarzer/kleenestar:0.0.4-alpha
 ```
 
 The manifest must list `linux/amd64` and `linux/arm64`. The `unknown/unknown` entry is only the attestation manifest and not a separate image.

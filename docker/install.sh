@@ -16,7 +16,7 @@
 # Options (environment variables, all optional; with sudo pass them after it:
 #          curl -fsSL <url> | sudo KLEENESTAR_PORT=8090 bash):
 #   KLEENESTAR_DIR           installation directory                (default: /opt/kleenestar)
-#   KLEENESTAR_IMAGE         image to run                          (default: rschwarzer/kleenestar:0.0.3-alpha)
+#   KLEENESTAR_IMAGE         image to run                          (default: rschwarzer/kleenestar:0.0.4-alpha)
 #   KLEENESTAR_PORT          host port                             (default: 80)
 #   KLEENESTAR_EXTERNAL_URI  public base URI                       (default: http://<hostname>:<port>/)
 #   KLEENESTAR_UID           numeric user id of the container user (default: 1654, the "app" user of .NET images)
@@ -28,7 +28,7 @@ set -euo pipefail
 main() {
 
 KLEENESTAR_DIR="${KLEENESTAR_DIR:-/opt/kleenestar}"
-KLEENESTAR_IMAGE="${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.3-alpha}"
+KLEENESTAR_IMAGE="${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.4-alpha}"
 KLEENESTAR_PORT="${KLEENESTAR_PORT:-80}"
 KLEENESTAR_UID="${KLEENESTAR_UID:-1654}"
 CONTAINER=kleenestar
@@ -210,7 +210,7 @@ services:
   kleenestar:
     hostname: ks
     container_name: kleenestar
-    image: ${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.3-alpha}
+    image: ${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.4-alpha}
     ports:
       - "${KLEENESTAR_PORT:-80}:8080"
     environment:

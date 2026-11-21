@@ -5,7 +5,7 @@
 # (set up by ../install.sh); the Dockerfile is KleeneStar/Dockerfile inside it.
 #
 # Usage:   ./docker/publish.sh [version] [suffix] [repository]
-# Example: ./docker/publish.sh 0.0.3 alpha rschwarzer/kleenestar
+# Example: ./docker/publish.sh 0.0.4 alpha rschwarzer/kleenestar
 # Defaults: version from <Version> of src/KleeneStar/KleeneStar.csproj, suffix "alpha",
 #           repository "rschwarzer/kleenestar". An empty suffix ('') tags a release.
 # Environment: WEBEXPRESS_FEED  folder with WebExpress *.nupkg packages that nuget.org does not
@@ -24,7 +24,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORKSPACE="$(dirname "$REPO")"
 
 DEFAULT_VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' "$REPO/src/KleeneStar/KleeneStar.csproj" | head -n 1)"
-VERSION="${1:-${DEFAULT_VERSION:-0.0.3}}"
+VERSION="${1:-${DEFAULT_VERSION:-0.0.4}}"
 SUFFIX="${2-alpha}"
 REPOSITORY="${3:-rschwarzer/kleenestar}"
 FEED="${WEBEXPRESS_FEED:-$REPO/docker/feed}"

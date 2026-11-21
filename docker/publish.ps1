@@ -21,7 +21,7 @@ Folder with WebExpress *.nupkg packages that nuget.org does not carry.
 Default: $env:WEBEXPRESS_FEED, else docker\feed (empty - everything from nuget.org).
 
 .EXAMPLE
-./docker/publish.ps1 -Version 0.0.3
+./docker/publish.ps1 -Version 0.0.4
 #>
 param(
 	[string]$Version = '',
@@ -43,7 +43,7 @@ $workspace = Split-Path -Parent $repo
 
 if (-not $Version) {
 	$csproj = Get-Content -Raw (Join-Path $repo 'src\KleeneStar\KleeneStar.csproj')
-	$Version = if ($csproj -match '<Version>([^<]+)</Version>') { $Matches[1] } else { '0.0.3' }
+	$Version = if ($csproj -match '<Version>([^<]+)</Version>') { $Matches[1] } else { '0.0.4' }
 }
 $tag = if ($Suffix) { "$Version-$Suffix" } else { $Version }
 
