@@ -12,9 +12,12 @@
 #   cd <workspace>          # the folder containing KleeneStar/, KleeneStar.Core/, ...
 #   docker build -f KleeneStar/Dockerfile --build-context nuget=<folder with WebExpress *.nupkg> -t kleenestar .
 #
-# WebExpress 2.0.1-alpha is not published on nuget.org. The named build context "nuget" hands the
-# folder with its packages (the local feed) to the build; without it the empty stage below stands
-# in and the restore only finds what nuget.org has.
+# WebExpress comes from nuget.org. The named build context "nuget" can hand a folder with
+# packages nuget.org does not carry yet (a local feed) to the build; without it the empty stage
+# below stands in and the restore finds everything on nuget.org.
+#
+# docker/publish.sh (publish.ps1) builds the image for linux/amd64 and linux/arm64 and pushes it;
+# docker/install.sh installs the published image on a Linux server.
 
 # ---------------------------------------------------------------- local package feed
 FROM scratch AS nuget
@@ -41,7 +44,9 @@ EXPOSE 8080
 USER app
 
 # ---------------------------------------------------------------- build
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+# the build runs on the platform of the building machine (no emulation) and produces portable IL
+# (UseAppHost=false), which the runtime stage of every target platform runs as it is
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 

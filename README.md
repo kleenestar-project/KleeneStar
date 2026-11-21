@@ -8,55 +8,86 @@ Whether you're building a local knowledge base, an issue tracker, or a distribut
 
 # Quick Install
 
-The quickest way to get **KleeneStar** up and running - including all required sibling repositories and the **WebExpress** framework packages - is the quick install script. It clones or updates the full workspace, restores the NuGet dependencies (including the **WebExpress** libraries), builds the server and starts it via `dotnet run`.
+The install script sets **KleeneStar** up in one go: it checks the prerequisites, clones (or updates) every repository side by side into one workspace folder, restores the NuGet packages (the **WebExpress** framework included) and compiles the whole solution, test projects included. When a prerequisite is missing it stops, names it and prints the command that installs it.
 
-Prerequisites: [git](https://git-scm.com) and the [.NET 10 SDK](https://dot.net/download).
+Prerequisites, all checked by the script:
 
-## Linux, macOS, WSL2, Termux
+- [git](https://git-scm.com)
+- the [.NET SDK](https://dot.net/download) 10 or newer and the ASP.NET Core 10 runtime (the .NET 10 SDK carries it)
+- access to `github.com` and `api.nuget.org`
+- about 3 GB of free disk space
+
+## Linux, macOS, WSL2, Git Bash
 
 ```
 curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/install.sh | bash
 ```
 
-## Windows (native, PowerShell)
+Options go after `bash -s --`, for example `... | bash -s -- --dir ~/src/KleeneStar --run`.
 
-Heads up: Native Windows runs **KleeneStar** without WSL (Windows Subsystem for Linux) - the **WebExpress**-based web server and all plugins work natively. If you'd rather use WSL2, the Linux/macOS one-liner above works there too. Found a bug? Please [file an issue](https://github.com/kleenestar-project/KleeneStar/issues).
+## Windows (PowerShell)
 
-Run this in PowerShell:
+**KleeneStar** runs natively on Windows; WSL is not needed. Found a bug? Please [file an issue](https://github.com/kleenestar-project/KleeneStar/issues).
 
 ```
-iex (irm https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/install.ps1)
+irm https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/install.ps1 | iex
 ```
 
-The script prepares the following layout next to each other and launches the server afterwards:
+or with curl:
+
+```
+curl.exe -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/install.ps1 -o install.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -Run
+```
+
+## Result
+
+The script prepares the following layout, generates a signing key of the installation's own and writes a start script beside the repositories:
 
 ```
 KleeneStar/
-├── KleeneStar/           (main repository - the web server you start)
-├── KleeneStar.Core/
+├── KleeneStar/              (host - the web server you start)
 ├── KleeneStar.Model/
+├── KleeneStar.Core/
 ├── KleeneStar.Portal/
-└── KleeneStar.Templates/
+├── KleeneStar.Templates/
+├── KleeneStar.Automation/
+├── KleeneStar.Integration/
+├── KleeneStar.Ldap/
+├── KleeneStar.Theme/
+├── KleeneStar.Help/
+├── KleeneStar.Seeder/
+├── kleenestar.env           (signing key of this installation)
+└── start.sh | start.ps1 + start.cmd
 ```
 
-Once the script finishes, **KleeneStar** is running and accessible at [http://localhost/kleenestar](http://localhost/kleenestar). To restart it later:
+Start **KleeneStar** with `KleeneStar/start.sh` (Linux, macOS, Git Bash) or `KleeneStar\start.cmd` (Windows, also by double-click). It then answers on [http://localhost/](http://localhost/); sign in as `admin` with the password `kleenestar` and change it. The shipped settings listen on port 80, which needs root on Linux; `start.sh` moves a non-root start to port 8080.
 
-```
-cd KleeneStar/KleeneStar/src/KleeneStar
-dotnet run
-```
+The signing key of the sign-in tokens in the shipped `settings/webexpress.settings.json` is published with the source. The script therefore generates a key per installation into `kleenestar.env` (readable by the current user only), and the start script hands it to the server as `WEBEXPRESS_WebExpress__Authentication__SigningKey`, which wins over the settings files. The file lies outside every repository, so it never blocks an update or lands in a commit. Starting from an IDE or with a plain `dotnet run`, set that environment variable to the key yourself; otherwise the published key is used.
 
-Optional environment variables to customize the installation:
+Running the script again updates every repository that has no local changes, compiles anew and keeps the key.
 
-|Variable            |Description                                        | Default
-|--------------------|---------------------------------------------------|--------------
-|`KLEENESTAR_DIR`    |Installation directory                             | `KleeneStar`
-|`KLEENESTAR_BRANCH` |Branch checked out for all repositories            | `develop`
-|`KLEENESTAR_NO_RUN` |Set to `1` to only build and skip starting the app | (unset)
+|Option (`install.sh`)  |Option (`install.ps1`) |Environment variable              |Description                                              | Default
+|-----------------------|-----------------------|----------------------------------|---------------------------------------------------------|--------------
+|`--dir <path>`         |`-Dir <path>`          |`KLEENESTAR_DIR`                  |Workspace folder                                         | `KleeneStar` (the current folder when it already is a workspace)
+|`--branch <name>`      |`-Branch <name>`       |`KLEENESTAR_BRANCH`               |Branch of every repository                               | `develop`
+|`--configuration <c>`  |`-Configuration <c>`   |`KLEENESTAR_CONFIGURATION`        |`Debug`, `Release` or `DebugLocal`                       | `Debug`
+|`--with-webexpress`    |`-WithWebExpress`      |`KLEENESTAR_WITH_WEBEXPRESS=1`    |Also clone the WebExpress sources (needed for `DebugLocal`) | off
+|`--run`                |`-Run`                 |`KLEENESTAR_RUN=1`                |Start **KleeneStar** after the build                     | off
+
+With `irm ... | iex` options are passed as environment variables, for example `$env:KLEENESTAR_RUN = '1'` before the call.
 
 ## Docker
 
-**KleeneStar** runs as a container. The image is built from the folder that holds the repositories side by side (the host references its siblings), so check them out as the quick install does and build from this repository:
+On a Linux server (amd64 or arm64), the container installer checks the prerequisites, installs Docker if needed, generates a signing key of the installation's own, pulls the published image and starts it under `/opt/kleenestar`:
+
+```
+curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/docker/install.sh | sudo bash
+```
+
+Options, uninstall and publishing a multi-architecture image (`docker/publish.sh`, `docker/publish.ps1`) are described in [docker/README.md](docker/README.md).
+
+To build the image from the sources instead: the image is built from the folder that holds the repositories side by side (the host references its siblings), so check them out as the quick install does and build from this repository:
 
 ```
 cd KleeneStar/KleeneStar
@@ -81,8 +112,8 @@ Docker's container name is `ks`; the `hosts` entry makes that name resolvable fr
 - The database, the token store and the search index live in the volume `kleenestar-data`; `docker compose down -v` removes them and the next start seeds afresh.
 - Any setting can be overridden with an environment variable prefixed `WEBEXPRESS_` (for example `WEBEXPRESS_Plugins__kleenestar.core__Database__ConnectionString`); see `src/KleeneStar/settings/readme.md`.
 - The container reports its health: `GET http://ks:8080/health` answers `200` while the installation can serve (initialized, database reachable with the current schema, sign-in configured) and `503` otherwise, the reason going to the server log. `docker compose ps` shows the state; a Kubernetes deployment uses the same endpoint for its startup and readiness probes and `/health/live` for liveness. See [the health concept](https://github.com/kleenestar-project/KleeneStar.Core/blob/main/docs/kleenestar.health.md).
-- Without Compose: `docker build -f KleeneStar/Dockerfile --build-context nuget=<feed folder> -t kleenestar .` from the workspace folder.
-- In Visual Studio, pick the launch profile **Container (Dockerfile)**; set the environment variable `WEBEXPRESS_FEED` to the feed folder for the image build.
+- Without Compose: `docker build -f KleeneStar/Dockerfile -t kleenestar .` from the workspace folder; `--build-context nuget=<folder>` adds packages nuget.org does not carry yet.
+- In Visual Studio, pick the launch profile **Container (Dockerfile)**; `WEBEXPRESS_FEED` optionally names such a package folder for the image build.
 
 ## Demo accounts
 
