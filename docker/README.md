@@ -98,7 +98,7 @@ A plain `docker build` or the Visual Studio container build only produces an ima
 If PowerShell reports that script execution is disabled, run the script with a process-scoped bypass. This does not change the system policy:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File ./docker/publish.ps1
+powershell -ExecutionPolicy Bypass -File ../docker/publish.ps1 -Feed ../docker/feed -Repository rschwarzer/kleenestar -Version alpha
 ```
 
 On Linux or macOS use the Bash script. It takes positional arguments `[version] [suffix] [repository]` and reads the feed from `WEBEXPRESS_FEED`:
@@ -110,12 +110,12 @@ chmod +x docker/publish.sh
 
 Parameters of the PowerShell script:
 
-|Parameter     |Default                                       |Description
-|--------------|----------------------------------------------|-----------------------------------------
+|Parameter     |Default                                           |Description
+|--------------|--------------------------------------------------|-----------------------------------------
 |`-Version`    |`<Version>` of `src/KleeneStar/KleeneStar.csproj` |Version number of the tag
-|`-Suffix`     |`alpha`                                       |Tag suffix (empty for a release without suffix)
-|`-Repository` |`rschwarzer/kleenestar`                       |Image name in the registry
-|`-Feed`       |`$env:WEBEXPRESS_FEED`, else `docker/feed`    |Folder with packages nuget.org does not carry
+|`-Suffix`     |`alpha`                                           |Tag suffix (empty for a release without suffix)
+|`-Repository` |`rschwarzer/kleenestar`                           |Image name in the registry
+|`-Feed`       |`$env:WEBEXPRESS_FEED`, else `docker/feed`        |Folder with packages nuget.org does not carry
 
 Both scripts check Docker, Buildx, the running daemon and the sibling repositories first. They need a Docker login with write access to the repository (`docker login`). If needed, they create the `multiarch` builder (driver `docker-container`), because the default builder cannot produce multi-platform images. They then push the image and print the manifest. The default tag is `rschwarzer/kleenestar:0.0.4-alpha`, the image `install.sh` runs; after publishing another tag, set `KLEENESTAR_IMAGE` on the next installer run.
 
