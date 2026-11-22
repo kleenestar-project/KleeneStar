@@ -18,7 +18,7 @@ This directory contains the helper files for the KleeneStar container. The `Dock
 Install it directly with curl (as root):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/docker/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/master/docker/install.sh | sudo bash -s -- rschwarzer/kleenestar:alpha
 ```
 
 With options: `curl -fsSL <url> | sudo KLEENESTAR_PORT=8090 bash`. Alternatively copy the script to the server and run it as root:
