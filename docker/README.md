@@ -18,7 +18,7 @@ This directory contains the helper files for the KleeneStar container. The `Dock
 Install it directly with curl (as root):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/docker/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/master/docker/install.sh | sudo bash -s -- rschwarzer/kleenestar:alpha
 ```
 
 With options: `curl -fsSL <url> | sudo KLEENESTAR_PORT=8090 bash`. Alternatively copy the script to the server and run it as root:
@@ -41,7 +41,7 @@ Optional environment variables:
 |Variable                         |Default                               |Description
 |---------------------------------|--------------------------------------|-----------------------------------------
 |`KLEENESTAR_DIR`                 |`/opt/kleenestar`                     |Installation directory (absolute path)
-|`KLEENESTAR_IMAGE`               |`rschwarzer/kleenestar:0.0.3-alpha`   |Image to run
+|`KLEENESTAR_IMAGE`               |`rschwarzer/kleenestar:0.0.4-alpha`   |Image to run
 |`KLEENESTAR_PORT`                |`80`                                  |Host port, mapped to container port `8080`
 |`KLEENESTAR_EXTERNAL_URI`        |`http://<hostname>:<port>/`           |Public base URI (without `:80` for port 80)
 |`KLEENESTAR_UID`                 |`1654`                                |Numeric user id of the container user
@@ -98,7 +98,7 @@ A plain `docker build` or the Visual Studio container build only produces an ima
 If PowerShell reports that script execution is disabled, run the script with a process-scoped bypass. This does not change the system policy:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File ./docker/publish.ps1
+powershell -ExecutionPolicy Bypass -File ../docker/publish.ps1 -Repository rschwarzer/kleenestar -Version alpha
 ```
 
 On Linux or macOS use the Bash script. It takes positional arguments `[version] [suffix] [repository]` and reads the feed from `WEBEXPRESS_FEED`:
@@ -110,19 +110,19 @@ chmod +x docker/publish.sh
 
 Parameters of the PowerShell script:
 
-|Parameter     |Default                                       |Description
-|--------------|----------------------------------------------|-----------------------------------------
+|Parameter     |Default                                           |Description
+|--------------|--------------------------------------------------|-----------------------------------------
 |`-Version`    |`<Version>` of `src/KleeneStar/KleeneStar.csproj` |Version number of the tag
-|`-Suffix`     |`alpha`                                       |Tag suffix (empty for a release without suffix)
-|`-Repository` |`rschwarzer/kleenestar`                       |Image name in the registry
-|`-Feed`       |`$env:WEBEXPRESS_FEED`, else `docker/feed`    |Folder with packages nuget.org does not carry
+|`-Suffix`     |`alpha` without `-Version`, else none             |Tag suffix (`-Version 1.0` gives `1.0`, add `-Suffix beta` for `1.0-beta`)
+|`-Repository` |`rschwarzer/kleenestar`                           |Image name in the registry
+|`-Feed`       |`$env:WEBEXPRESS_FEED`, else `docker/feed`        |Folder with packages nuget.org does not carry
 
-Both scripts check Docker, Buildx, the running daemon and the sibling repositories first. They need a Docker login with write access to the repository (`docker login`). If needed, they create the `multiarch` builder (driver `docker-container`), because the default builder cannot produce multi-platform images. They then push the image and print the manifest. The default tag is `rschwarzer/kleenestar:0.0.3-alpha`, the image `install.sh` runs; after publishing another tag, set `KLEENESTAR_IMAGE` on the next installer run.
+Both scripts check Docker, Buildx, the running daemon and the sibling repositories first. They need a Docker login with write access to the repository (`docker login`). If needed, they create the `multiarch` builder (driver `docker-container`), because the default builder cannot produce multi-platform images. They then push the image and print the manifest. The default tag is `rschwarzer/kleenestar:0.0.4-alpha`, the image `install.sh` runs; after publishing another tag, set `KLEENESTAR_IMAGE` on the next installer run.
 
 Verify the result:
 
 ```sh
-docker buildx imagetools inspect rschwarzer/kleenestar:0.0.3-alpha
+docker buildx imagetools inspect rschwarzer/kleenestar:0.0.4-alpha
 ```
 
 The manifest must list `linux/amd64` and `linux/arm64`. The `unknown/unknown` entry is only the attestation manifest and not a separate image.

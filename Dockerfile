@@ -26,7 +26,7 @@ FROM scratch AS nuget
 # the runtime the application runs in; Visual Studio's fast mode starts its debug container from
 # this stage with the build output mounted into /app. The aspnet image, not the plain runtime:
 # WebExpress serves through Kestrel.
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:11.0 AS base
 WORKDIR /app
 
 # Listen on all container interfaces so Docker can forward requests to port 8080. The external
@@ -46,7 +46,7 @@ USER app
 # ---------------------------------------------------------------- build
 # the build runs on the platform of the building machine (no emulation) and produces portable IL
 # (UseAppHost=false), which the runtime stage of every target platform runs as it is
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 

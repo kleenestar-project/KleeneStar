@@ -13,7 +13,7 @@ The install script sets **KleeneStar** up in one go: it checks the prerequisites
 Prerequisites, all checked by the script:
 
 - [git](https://git-scm.com)
-- the [.NET SDK](https://dot.net/download) 10 or newer and the ASP.NET Core 10 runtime (the .NET 10 SDK carries it)
+- the [.NET SDK](https://dot.net/download) 11 or newer and the ASP.NET Core 11 runtime (the .NET 11 SDK carries it)
 - access to `github.com` and `api.nuget.org`
 - about 3 GB of free disk space
 

@@ -12,11 +12,14 @@
 #   - pulls the image, starts the container and waits until it reports healthy.
 #
 # Usage:   curl -fsSL https://raw.githubusercontent.com/kleenestar-project/KleeneStar/develop/docker/install.sh | sudo bash
-#          or: sudo ./install.sh
+#          or: sudo ./install.sh [IMAGE]
+#          or: sudo ./install.sh --image IMAGE
+#          or: curl -fsSL <url> | sudo bash -s -- rschwarzer/kleenestar:0.0.4-alpha
+# The image can be passed as the first argument or with --image/-i; it wins over KLEENESTAR_IMAGE.
 # Options (environment variables, all optional; with sudo pass them after it:
 #          curl -fsSL <url> | sudo KLEENESTAR_PORT=8090 bash):
 #   KLEENESTAR_DIR           installation directory                (default: /opt/kleenestar)
-#   KLEENESTAR_IMAGE         image to run                          (default: rschwarzer/kleenestar:0.0.3-alpha)
+#   KLEENESTAR_IMAGE         image to run, or pass it as argument  (default: rschwarzer/kleenestar:0.0.4-alpha)
 #   KLEENESTAR_PORT          host port                             (default: 80)
 #   KLEENESTAR_EXTERNAL_URI  public base URI                       (default: http://<hostname>:<port>/)
 #   KLEENESTAR_UID           numeric user id of the container user (default: 1654, the "app" user of .NET images)
@@ -27,8 +30,27 @@ set -euo pipefail
 # This makes "curl ... | sudo bash" safe (no command can consume the script from stdin).
 main() {
 
+usage() {
+	echo "Usage: install.sh [IMAGE] | [--image IMAGE] [--help]"
+	echo "  IMAGE, --image, -i   image to run (default: \$KLEENESTAR_IMAGE or rschwarzer/kleenestar:0.0.4-alpha)"
+}
+
+ARG_IMAGE=""
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-h|--help) usage; exit 0 ;;
+		-i|--image)
+			[ $# -ge 2 ] && [ -n "$2" ] || { usage >&2; printf '\033[1;31mError:\033[0m %s\n' "$1 needs an image name." >&2; exit 1; }
+			ARG_IMAGE="$2"; shift 2 ;;
+		--image=*) ARG_IMAGE="${1#--image=}"; shift ;;
+		-*) usage >&2; printf '\033[1;31mError:\033[0m %s\n' "Unknown option $1." >&2; exit 1 ;;
+		*) ARG_IMAGE="$1"; shift ;;
+	esac
+done
+[ -z "$ARG_IMAGE" ] || KLEENESTAR_IMAGE="$ARG_IMAGE"
+
 KLEENESTAR_DIR="${KLEENESTAR_DIR:-/opt/kleenestar}"
-KLEENESTAR_IMAGE="${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.3-alpha}"
+KLEENESTAR_IMAGE="${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.4-alpha}"
 KLEENESTAR_PORT="${KLEENESTAR_PORT:-80}"
 KLEENESTAR_UID="${KLEENESTAR_UID:-1654}"
 CONTAINER=kleenestar
@@ -210,7 +232,7 @@ services:
   kleenestar:
     hostname: ks
     container_name: kleenestar
-    image: ${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.3-alpha}
+    image: ${KLEENESTAR_IMAGE:-rschwarzer/kleenestar:0.0.4-alpha}
     ports:
       - "${KLEENESTAR_PORT:-80}:8080"
     environment:

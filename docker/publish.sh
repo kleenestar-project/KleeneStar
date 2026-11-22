@@ -5,9 +5,10 @@
 # (set up by ../install.sh); the Dockerfile is KleeneStar/Dockerfile inside it.
 #
 # Usage:   ./docker/publish.sh [version] [suffix] [repository]
-# Example: ./docker/publish.sh 0.0.3 alpha rschwarzer/kleenestar
-# Defaults: version from <Version> of src/KleeneStar/KleeneStar.csproj, suffix "alpha",
-#           repository "rschwarzer/kleenestar". An empty suffix ('') tags a release.
+# Example: ./docker/publish.sh 0.0.4 alpha rschwarzer/kleenestar
+# Defaults: version from <Version> of src/KleeneStar/KleeneStar.csproj, repository
+#           "rschwarzer/kleenestar". The suffix defaults to "alpha" when the version is omitted
+#           and to none when a version is given (an explicit '' also means none).
 # Environment: WEBEXPRESS_FEED  folder with WebExpress *.nupkg packages that nuget.org does not
 #                               carry (default: docker/feed, empty - everything from nuget.org)
 set -euo pipefail
@@ -24,8 +25,9 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORKSPACE="$(dirname "$REPO")"
 
 DEFAULT_VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' "$REPO/src/KleeneStar/KleeneStar.csproj" | head -n 1)"
-VERSION="${1:-${DEFAULT_VERSION:-0.0.3}}"
-SUFFIX="${2-alpha}"
+VERSION="${1:-${DEFAULT_VERSION:-0.0.4}}"
+if [ -z "${1:-}" ]; then DEFAULT_SUFFIX=alpha; else DEFAULT_SUFFIX=''; fi
+SUFFIX="${2-$DEFAULT_SUFFIX}"
 REPOSITORY="${3:-rschwarzer/kleenestar}"
 FEED="${WEBEXPRESS_FEED:-$REPO/docker/feed}"
 
