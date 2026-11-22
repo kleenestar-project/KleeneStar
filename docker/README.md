@@ -98,7 +98,7 @@ A plain `docker build` or the Visual Studio container build only produces an ima
 If PowerShell reports that script execution is disabled, run the script with a process-scoped bypass. This does not change the system policy:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File ../docker/publish.ps1 -Feed ../docker/feed -Repository rschwarzer/kleenestar -Version alpha
+powershell -ExecutionPolicy Bypass -File ../docker/publish.ps1 -Repository rschwarzer/kleenestar -Version alpha
 ```
 
 On Linux or macOS use the Bash script. It takes positional arguments `[version] [suffix] [repository]` and reads the feed from `WEBEXPRESS_FEED`:
@@ -113,7 +113,7 @@ Parameters of the PowerShell script:
 |Parameter     |Default                                           |Description
 |--------------|--------------------------------------------------|-----------------------------------------
 |`-Version`    |`<Version>` of `src/KleeneStar/KleeneStar.csproj` |Version number of the tag
-|`-Suffix`     |`alpha`                                           |Tag suffix (empty for a release without suffix)
+|`-Suffix`     |`alpha` without `-Version`, else none             |Tag suffix (`-Version 1.0` gives `1.0`, add `-Suffix beta` for `1.0-beta`)
 |`-Repository` |`rschwarzer/kleenestar`                           |Image name in the registry
 |`-Feed`       |`$env:WEBEXPRESS_FEED`, else `docker/feed`        |Folder with packages nuget.org does not carry
 

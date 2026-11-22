@@ -11,7 +11,7 @@ The build context is the workspace folder that holds the KleeneStar repositories
 Version number of the tag. Default: <Version> of src\KleeneStar\KleeneStar.csproj.
 
 .PARAMETER Suffix
-Tag suffix. Default: alpha. An empty suffix tags a release.
+Tag suffix. Default: alpha when -Version is omitted, none when -Version is given.
 
 .PARAMETER Repository
 Image name in the registry. Default: rschwarzer/kleenestar.
@@ -25,7 +25,7 @@ Default: $env:WEBEXPRESS_FEED, else docker\feed (empty - everything from nuget.o
 #>
 param(
 	[string]$Version = '',
-	[string]$Suffix = 'alpha',
+	[string]$Suffix = '',
 	[string]$Repository = 'rschwarzer/kleenestar',
 	[string]$Feed = $(if ($env:WEBEXPRESS_FEED) { $env:WEBEXPRESS_FEED } else { Join-Path $PSScriptRoot 'feed' })
 )
@@ -44,6 +44,7 @@ $workspace = Split-Path -Parent $repo
 if (-not $Version) {
 	$csproj = Get-Content -Raw (Join-Path $repo 'src\KleeneStar\KleeneStar.csproj')
 	$Version = if ($csproj -match '<Version>([^<]+)</Version>') { $Matches[1] } else { '0.0.4' }
+	if (-not $PSBoundParameters.ContainsKey('Suffix')) { $Suffix = 'alpha' }
 }
 $tag = if ($Suffix) { "$Version-$Suffix" } else { $Version }
 
