@@ -46,7 +46,7 @@ docker info >/dev/null 2>&1 \
 	|| die "The Docker daemon does not answer." "Start Docker Desktop (or: systemctl start docker) and run this script again."
 
 for repo in KleeneStar KleeneStar.Model KleeneStar.Core KleeneStar.Portal KleeneStar.Templates \
-	KleeneStar.Automation KleeneStar.Integration KleeneStar.Ldap KleeneStar.Theme KleeneStar.Help KleeneStar.Seeder; do
+	KleeneStar.Automation KleeneStar.Integration KleeneStar.Ldap KleeneStar.Calendar KleeneStar.Theme KleeneStar.Help KleeneStar.Seeder; do
 	[ -d "$WORKSPACE/$repo/src" ] \
 		|| die "The repository $repo is missing in $WORKSPACE." \
 			"The image is built from all KleeneStar repositories side by side." \

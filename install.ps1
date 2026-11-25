@@ -70,6 +70,7 @@ function Invoke-KleeneStarInstall {
 		'KleeneStar.Automation',
 		'KleeneStar.Integration',
 		'KleeneStar.Ldap',
+		'KleeneStar.Calendar',
 		'KleeneStar.Theme',
 		'KleeneStar.Help',
 		'KleeneStar.Seeder'

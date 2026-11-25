@@ -64,7 +64,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $repos = @('KleeneStar', 'KleeneStar.Model', 'KleeneStar.Core', 'KleeneStar.Portal', 'KleeneStar.Templates',
-	'KleeneStar.Automation', 'KleeneStar.Integration', 'KleeneStar.Ldap', 'KleeneStar.Theme', 'KleeneStar.Help', 'KleeneStar.Seeder')
+	'KleeneStar.Automation', 'KleeneStar.Integration', 'KleeneStar.Ldap', 'KleeneStar.Calendar', 'KleeneStar.Theme', 'KleeneStar.Help', 'KleeneStar.Seeder')
 foreach ($name in $repos) {
 	if (-not (Test-Path (Join-Path $workspace "$name\src"))) {
 		Stop-Publish "The repository $name is missing in $workspace." @(

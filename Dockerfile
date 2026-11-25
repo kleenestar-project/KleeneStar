@@ -4,7 +4,7 @@
 #
 # The build context is the folder that holds the KleeneStar repositories side by side
 # (KleeneStar, KleeneStar.Core, KleeneStar.Model, KleeneStar.Portal, KleeneStar.Templates,
-# KleeneStar.Automation, KleeneStar.Integration, KleeneStar.Ldap, KleeneStar.Theme,
+# KleeneStar.Automation, KleeneStar.Integration, KleeneStar.Ldap, KleeneStar.Calendar, KleeneStar.Theme,
 # KleeneStar.Help, KleeneStar.Seeder) - the host references its siblings by relative path. The demo data plugin
 # KleeneStar.Seeder is referenced outside the Release configuration only, so the default image
 # (BUILD_CONFIGURATION=Release) starts with the base data. docker-compose.yml sets this up; by hand:
@@ -63,6 +63,7 @@ COPY KleeneStar.Templates/src/KleeneStar.Templates/KleeneStar.Templates.csproj K
 COPY KleeneStar.Automation/src/KleeneStar.Automation/KleeneStar.Automation.csproj KleeneStar.Automation/src/KleeneStar.Automation/
 COPY KleeneStar.Integration/src/KleeneStar.Integration/KleeneStar.Integration.csproj KleeneStar.Integration/src/KleeneStar.Integration/
 COPY KleeneStar.Ldap/src/KleeneStar.Ldap/KleeneStar.Ldap.csproj KleeneStar.Ldap/src/KleeneStar.Ldap/
+COPY KleeneStar.Calendar/src/KleeneStar.Calendar/KleeneStar.Calendar.csproj KleeneStar.Calendar/src/KleeneStar.Calendar/
 COPY KleeneStar.Theme/src/KleeneStar.Theme/KleeneStar.Theme.csproj KleeneStar.Theme/src/KleeneStar.Theme/
 COPY KleeneStar.Help/src/KleeneStar.Help/KleeneStar.Help.csproj KleeneStar.Help/src/KleeneStar.Help/
 COPY KleeneStar.Seeder/src/KleeneStar.Seeder/KleeneStar.Seeder.csproj KleeneStar.Seeder/src/KleeneStar.Seeder/
@@ -77,6 +78,7 @@ COPY KleeneStar.Templates/src/KleeneStar.Templates/ KleeneStar.Templates/src/Kle
 COPY KleeneStar.Automation/src/KleeneStar.Automation/ KleeneStar.Automation/src/KleeneStar.Automation/
 COPY KleeneStar.Integration/src/KleeneStar.Integration/ KleeneStar.Integration/src/KleeneStar.Integration/
 COPY KleeneStar.Ldap/src/KleeneStar.Ldap/ KleeneStar.Ldap/src/KleeneStar.Ldap/
+COPY KleeneStar.Calendar/src/KleeneStar.Calendar/ KleeneStar.Calendar/src/KleeneStar.Calendar/
 COPY KleeneStar.Theme/src/KleeneStar.Theme/ KleeneStar.Theme/src/KleeneStar.Theme/
 COPY KleeneStar.Help/src/KleeneStar.Help/ KleeneStar.Help/src/KleeneStar.Help/
 COPY KleeneStar.Seeder/src/KleeneStar.Seeder/ KleeneStar.Seeder/src/KleeneStar.Seeder/
