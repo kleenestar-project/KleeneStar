@@ -19,6 +19,12 @@
   <Project Path="../../KleeneStar.Calendar/src/KleeneStar.Calendar/KleeneStar.Calendar.csproj">
     <BuildType Solution="DebugLocal|*" Project="Debug" />
   </Project>
+  <Project Path="../../KleeneStar.Poll/src/KleeneStar.Poll.Test/KleeneStar.Poll.Test.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
+  <Project Path="../../KleeneStar.Poll/src/KleeneStar.Poll/KleeneStar.Poll.csproj">
+    <BuildType Solution="DebugLocal|*" Project="Debug" />
+  </Project>
   <Project Path="../../KleeneStar.Core/src/KleeneStar.Core.Test/KleeneStar.Core.Test.csproj" />
   <Project Path="../../KleeneStar.Core/src/KleeneStar.Core/KleeneStar.Core.csproj" />
   <Project Path="../../KleeneStar.Help/src/KleeneStar.Help.Test/KleeneStar.Help.Test.csproj">

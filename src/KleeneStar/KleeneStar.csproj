@@ -60,6 +60,7 @@
 	  <ProjectReference Include="..\..\..\KleeneStar.Integration\src\KleeneStar.Integration\KleeneStar.Integration.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Help\src\KleeneStar.Help\KleeneStar.Help.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Calendar\src\KleeneStar.Calendar\KleeneStar.Calendar.csproj" />
+	  <ProjectReference Include="..\..\..\KleeneStar.Poll\src\KleeneStar.Poll\KleeneStar.Poll.csproj" />
 	</ItemGroup>
 
 	<!-- demonstration and test data: part of the Debug and DebugLocal builds; the Release build
